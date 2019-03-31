@@ -1,24 +1,37 @@
 package wpdemo.merchant.dao.model;
 
-import wpdemo.support.utill.VisitorBase;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Kovacs Maria
  */
-public class Merchant extends VisitorBase{
+public class Merchant {
+
+    private long id;
     private String nameToDisplay;
     private String introduction;
     private String description;
+    private List<Long> townIds = new ArrayList<>();
 
     public Merchant() {
         super();
     }
 
-    public Merchant(String nameToDisplay, String introduction, String description, long id, String firstName, String lastName, String eMail) {
-        super(id, firstName, lastName, eMail);
+    public Merchant(long id, String nameToDisplay, String introduction, String description, List<Long> townIds) {
+        this.id = id;
         this.nameToDisplay = nameToDisplay;
         this.introduction = introduction;
         this.description = description;
+        this.townIds = townIds;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getNameToDisplay() {
@@ -44,6 +57,12 @@ public class Merchant extends VisitorBase{
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
+
+    public List<Long> getTownIds() {
+        return townIds;
+    }
+
+    public void setTownIds(List<Long> townIds) {
+        this.townIds = townIds;
+    }
 }

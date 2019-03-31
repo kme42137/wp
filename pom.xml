@@ -12,6 +12,8 @@
         <module>product</module>
         <module>support</module>
         <module>Image</module>
+        <module>visitor</module>
+        <module>town</module>
     </modules>
     <dependencies>
         <dependency>
