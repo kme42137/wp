@@ -11,5 +11,7 @@
     <modules>
         <module>visitor-dao-model</module>
         <module>visitor-dao-jdbc</module>
+        <module>visitor-service-object</module>
+        <module>visitor-web</module>
     </modules>
 </project>

@@ -162,4 +162,43 @@ public class VisitorDaoImpl implements IVisitorDao {
         return 0;
     }
 
+    @Override
+    public Visitor login(String pName, String pPassword) {
+         try {
+            PreparedStatement ps = con.prepareStatement("SELECT id,firstName, lastName, eMail, isMerchant FROM visitor WHERE nickname=? AND password=?");
+            ps.setString(1, pName);
+            ps.setString(2, pPassword);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Visitor rsVisitor = new Visitor();
+                rsVisitor.setVisitorId(rs.getLong(1));
+                rsVisitor.setNickname(pName);
+                rsVisitor.setFirstname(rs.getString(2));
+                rsVisitor.setLastName(rs.getString(3));
+                rsVisitor.seteMail(rs.getString(4));
+                rsVisitor.setPassword(pPassword);
+                rsVisitor.setIsMerchant(rs.getBoolean(5));
+                return rsVisitor;
+            }        
+            ps = con.prepareStatement("SELECT id, nickname, firstName, lastName, isMerchant FROM visitor WHERE eMail=? AND password=?");
+            ps.setString(1, pName);
+            ps.setString(2, pPassword);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Visitor rsVisitor = new Visitor();
+                rsVisitor.setVisitorId(rs.getLong(1));
+                rsVisitor.setNickname(rs.getString(2));
+                rsVisitor.setFirstname(rs.getString(3));
+                rsVisitor.setLastName(rs.getString(4));
+                rsVisitor.seteMail(pName);
+                rsVisitor.setPassword(pPassword);
+                rsVisitor.setIsMerchant(rs.getBoolean(5));
+                return rsVisitor;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VisitorDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
 }

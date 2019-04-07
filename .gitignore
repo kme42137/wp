@@ -2,3 +2,6 @@
 /visitor/visitor-dao-jdbc/target/
 /town/town-dao-model/target/
 /town/town-dao-jdbc/target/
+/visitor/visitor-web/target/
+/visitor/visitor-service-object/target/
+/support/support-web/target/

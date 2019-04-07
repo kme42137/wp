@@ -18,5 +18,7 @@ public interface IVisitorDao {
     public Visitor getByEmail(String pEmail);
     
     public long getMerchantId(Visitor pVisitor);
+    
+    public Visitor login(String pName, String pPassword);
         
 }
