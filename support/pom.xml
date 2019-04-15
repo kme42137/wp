@@ -10,6 +10,5 @@
     <packaging>pom</packaging>
     <modules>
         <module>support-util</module>
-    <module>support-web</module>
   </modules>
 </project>

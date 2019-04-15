@@ -7,9 +7,9 @@
         <title>Regisztráció</title>
     </head>
     <body>
-        <jsp:include page="/support/menu.jsp"></jsp:include>
+        <jsp:include page="menu.jsp"></jsp:include>
             <div class="col-md-6 offset-md-3">
-                <form action="/reg" method="post">                        
+                <form action="reg" method="post">                        
                     <div class="form-group row">
                         <label>Felhasználónév</label>
                         <input name="pnickname" class="form-control" value="${userinput.nickname}">
@@ -32,12 +32,12 @@
                 </div>
                 <div class="form-group row">
                     <label>Jelszó (minimum 7 karakter)</label>
-                    <input name="ppassword1" class="form-control">
+                    <input type="password" name="ppassword1" class="form-control"  placeholder="Password">
                     <label>${messages.ppassword1}</label>    
                 </div>
                 <div class="form-group row">
                     <label>Jelszó megerősítése</label>
-                    <input name="ppassword2" class="form-control">
+                    <input type="password" name="ppassword2" class="form-control"  placeholder="Password">
                 </div>
                 <div class="form-group row"><input type="submit" value="Regisztració" class="btn btn-light"></div>            
             </form>

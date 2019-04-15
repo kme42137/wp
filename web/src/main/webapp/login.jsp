@@ -6,7 +6,7 @@
         <title>Bejelentkezés</title>
     </head>
     <body>
-        <jsp:include page="/support/menu.jsp"></jsp:include>
+        <jsp:include page="menu.jsp"></jsp:include>
             <div class="col-md-6 offset-md-3">
                 <form action="login" method="post">                        
                     <div class="form-group row">

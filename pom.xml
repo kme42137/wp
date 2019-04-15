@@ -6,7 +6,6 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-    <module>wp-web</module>
         <module>merchant</module>
         <module>customer</module>
         <module>product</module>
@@ -14,7 +13,8 @@
         <module>Image</module>
         <module>visitor</module>
         <module>town</module>
-    </modules>
+    <module>web</module>
+  </modules>
     <dependencies>
         <dependency>
             <groupId>org.webjars</groupId>

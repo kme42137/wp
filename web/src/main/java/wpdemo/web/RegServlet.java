@@ -1,4 +1,4 @@
-package wpdemo.visitor.web;
+package wpdemo.web;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,6 +13,7 @@ import wpdemo.visitor.dao.model.Visitor;
 import wpdemo.visitor.service.object.VisitorServiceImpl;
 
 /**
+ *
  * @author Kovacs Maria
  */
 @WebServlet(name = "RegServlet", urlPatterns = {"/reg"})
@@ -32,7 +33,6 @@ public class RegServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         getServletContext().getRequestDispatcher("/reg.jsp").include(request, response);
-
     }
 
     /**
@@ -92,6 +92,7 @@ public class RegServlet extends HttpServlet {
                     break;
                 case 3:
                     messages.put("pemail", e.getMessage());
+                    break;
                 case 4:
                     if (messages.get("ppassword1") == null) {
                         messages.put("ppassword1", e.getMessage());
@@ -104,7 +105,7 @@ public class RegServlet extends HttpServlet {
             request.setAttribute("messages", messages);
             doGet(request, response);
         } else {
-            response.sendRedirect("/login.jsp");           
+            response.sendRedirect("login.jsp");
         }
     }
 

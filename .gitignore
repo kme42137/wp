@@ -5,3 +5,10 @@
 /visitor/visitor-web/target/
 /visitor/visitor-service-object/target/
 /support/support-web/target/
+/wp-web/target/
+/support/support-util/target/
+/merchant/merchant-dao-jdbc/target/
+/merchant/merchant-dao-model/target/
+/product/product-dao-model/target/
+/Image/image-dao-model/target/
+/web/target/
