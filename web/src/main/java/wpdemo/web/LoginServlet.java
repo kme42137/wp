@@ -32,6 +32,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setAttribute("ismerchant", request.getParameter("ismerchant"));
         getServletContext().getRequestDispatcher("/login.jsp").include(request, response);
 
     }

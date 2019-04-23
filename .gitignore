@@ -12,3 +12,7 @@
 /product/product-dao-model/target/
 /Image/image-dao-model/target/
 /web/target/
+/merchant/merchant-service-object/target/
+/town/town-service-object/target/
+/Image/image-dao-jdbc/target/
+/Image/image-service-object/target/

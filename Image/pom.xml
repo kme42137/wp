@@ -11,5 +11,7 @@
     <name>image</name>
     <modules>
         <module>image-dao-model</module>
+        <module>image-dao-jdbc</module>
+        <module>image-service-object</module>
     </modules>
 </project>

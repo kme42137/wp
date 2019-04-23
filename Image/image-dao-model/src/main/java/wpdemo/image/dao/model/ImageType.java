@@ -1,4 +1,4 @@
-package wpdemo.image.dao.model;
+ package wpdemo.image.dao.model;
 
 /**
  * @author Kovacs Maria

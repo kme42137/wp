@@ -165,9 +165,11 @@ public class VisitorDaoImpl implements IVisitorDao {
     @Override
     public Visitor login(String pName, String pPassword) {
          try {
-            PreparedStatement ps = con.prepareStatement("SELECT id,firstName, lastName, eMail, isMerchant FROM visitor WHERE nickname=? AND password=?");
+            PreparedStatement ps = con.prepareStatement("SELECT id,firstName, lastName, eMail, isMerchant FROM visitor WHERE nickname=? AND password=? AND BINARY(nickname) = BINARY(?) AND BINARY(password) = BINARY(?)");
             ps.setString(1, pName);
             ps.setString(2, pPassword);
+            ps.setString(3, pName);
+            ps.setString(4, pPassword);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 Visitor rsVisitor = new Visitor();

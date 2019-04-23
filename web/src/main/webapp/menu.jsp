@@ -3,8 +3,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel='stylesheet' href='/webjars/bootstrap/4.1.3/css/bootstrap.min.css'>
-    <script type="text/javascript" src="/webjars/jquery/2.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -18,33 +16,61 @@
             <c:choose>
                 <c:when test="${sessionScope.user == null}">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Termeloknek
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Látogatóknak
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Valami tuti</a>
                             <a class="dropdown-item" href="#">Valami más</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="login">Bejelentkezés/regisztráció</a>
-
-                        </div>
-                    </li>            
+                            <a href="<c:url value="login"><c:param name="ismerchant" value="${false}"/></c:url>">Bejelentkezés/regisztráció</a>                            
+                            </div>
+                        </li>     
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Termelőknek
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">Valami tuti</a>
+                                <a class="dropdown-item" href="#">Valami más</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="<c:url value="login"><c:param name="ismerchant" value="${true}"/></c:url>">Bejelentkezés/regisztráció</a>                            
+                            </div>
+                        </li>            
                 </c:when>
-                <c:otherwise>            
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            ${sessionScope.user.nickname}
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Valami tuti</a>
-                            <a class="dropdown-item" href="#">Valami más</a>                     
-                            <a class="dropdown-item" href="">Termelői tevékenység</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="logout">Kijelentkezés</a>
-                        </div>
-                    </li>
+                <c:otherwise>    
+                    <c:choose>
+                        <c:when test="${sessionScope.user.isMerchant}">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ${sessionScope.user.nickname}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">Árucikk rögzítése</a>
+                                <a class="dropdown-item" href="mreg">Tremelői tevékenység leírása</a>                     
+                                <a class="dropdown-item" href="modreg">Személyes adatok módosítása</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="logout">Kijelentkezés</a>
+                            </div>
+                        </li>
+                        </c:when>
+                        <c:otherwise> 
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ${sessionScope.user.nickname}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                                                   
+                                <a class="dropdown-item" href="modreg">Személyes adatok módosítása</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="logout">Kijelentkezés</a>
+                            </div>
+                        </li>
+                        </c:otherwise>
+                    </c:choose>
                 </c:otherwise>
             </c:choose>
         </ul>
     </div>
 </nav>
+<script type="text/javascript" src="/webjars/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>

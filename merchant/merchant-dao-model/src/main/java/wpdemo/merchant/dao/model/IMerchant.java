@@ -9,7 +9,7 @@ import wpdemo.town.dao.model.Town;
  */
 public interface IMerchant {
     
-    public Merchant create(Merchant pMerchant, long pVisitorId);
+    public Merchant create(Merchant pMerchant);
 
     public Merchant modify(long pOldMerchantId, Merchant pMerchant);
 
@@ -19,9 +19,8 @@ public interface IMerchant {
     
     public Merchant getByProduct(long pProductId);
     
-    public Merchant getByNameToDisplay(String nameToDisplay);
+    public List<Merchant> getByNameToDisplay(String nameToDisplay);
     
     public List<Merchant> getByTown(Town pTown); 
     
-    public long getVisitorId(Merchant pMerchant);
 }

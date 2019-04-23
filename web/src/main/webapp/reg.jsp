@@ -1,5 +1,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,6 +40,7 @@
                     <label>Jelszó megerősítése</label>
                     <input type="password" name="ppassword2" class="form-control"  placeholder="Password">
                 </div>
+                <input type="hidden" value="${ismerchant}" name="ismerchant" />
                 <div class="form-group row"><input type="submit" value="Regisztració" class="btn btn-light"></div>            
             </form>
         </div>

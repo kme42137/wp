@@ -6,9 +6,10 @@ import java.util.List;
 /**
  * @author Kovacs Maria
  */
-public class Merchant {
+public class Merchant{
 
     private long id;
+    private long visitorId;
     private String nameToDisplay;
     private String introduction;
     private String description;
@@ -16,10 +17,11 @@ public class Merchant {
 
     public Merchant() {
         super();
-    }
-
-    public Merchant(long id, String nameToDisplay, String introduction, String description, List<Long> townIds) {
+    }  
+    
+    public Merchant(long id, long visitorId, String nameToDisplay, String introduction, String description, List<Long> townIds) {
         this.id = id;
+        this.visitorId=visitorId;
         this.nameToDisplay = nameToDisplay;
         this.introduction = introduction;
         this.description = description;
@@ -34,6 +36,14 @@ public class Merchant {
         this.id = id;
     }
 
+    public long getVisitorId() {
+        return visitorId;
+    }
+
+    public void setVisitorId(long visitorId) {
+        this.visitorId = visitorId;
+    }
+    
     public String getNameToDisplay() {
         return nameToDisplay;
     }

@@ -11,5 +11,6 @@
     <modules>
         <module>town-dao-model</module>
         <module>town-dao-jdbc</module>
+        <module>town-service-object</module>
     </modules>
 </project>

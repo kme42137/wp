@@ -11,5 +11,6 @@
     <modules>
         <module>merchant-dao-model</module>
         <module>merchant-dao-jdbc</module>
+        <module>merchant-service-object</module>
     </modules>
 </project>

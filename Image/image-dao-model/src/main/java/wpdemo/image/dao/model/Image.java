@@ -4,17 +4,20 @@ package wpdemo.image.dao.model;
  * @author Kovacs Maria
  */
 public class Image {
+
     private long id;
     private ImageType type;
     private long contactId;
+    private String location;
 
     public Image() {
     }
 
-    public Image(long id, ImageType type, long contactId) {
+    public Image(long id, ImageType type, long contactId, String location) {
         this.id = id;
         this.type = type;
         this.contactId = contactId;
+        this.location = location;
     }
 
     public long getId() {
@@ -40,6 +43,13 @@ public class Image {
     public void setContactId(long contactId) {
         this.contactId = contactId;
     }
-    
-    
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
 }

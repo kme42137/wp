@@ -31,10 +31,10 @@ public class MerchantDaoImpl implements IMerchant{
     }
 
     @Override
-    public Merchant create(Merchant pMerchant, long pVisitorId) {
+    public Merchant create(Merchant pMerchant) {
         try {
             PreparedStatement ps = con.prepareStatement("INSERT INTO merchant(visitor_id, nameToDisplay, introduction, description) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            ps.setLong(1, pVisitorId);
+            ps.setLong(1, pMerchant.getVisitorId());
             ps.setString(2, pMerchant.getNameToDisplay());
             ps.setString(3,pMerchant.getIntroduction());
             ps.setString(4, pMerchant.getDescription());            
@@ -91,15 +91,16 @@ public class MerchantDaoImpl implements IMerchant{
     @Override
     public Merchant get(long pMerchantId) {
      try {
-            PreparedStatement ps = con.prepareStatement("SELECT nameToDisplay, introduction, description FROM visitor WHERE id=?");
+            PreparedStatement ps = con.prepareStatement("SELECT visitor_id, nameToDisplay, introduction, description FROM visitor WHERE id=?");
             ps.setLong(1, pMerchantId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 Merchant rsMerchant = new Merchant();
                 rsMerchant.setId(pMerchantId);
-                rsMerchant.setNameToDisplay(rs.getString(1));
-                rsMerchant.setIntroduction(rs.getString(2));
-                rsMerchant.setDescription(rs.getString(3));
+                rsMerchant.setVisitorId(rs.getLong(1));
+                rsMerchant.setNameToDisplay(rs.getString(2));
+                rsMerchant.setIntroduction(rs.getString(3));
+                rsMerchant.setDescription(rs.getString(4));
                 rsMerchant.setTownIds(getTownIds(pMerchantId));
                 return rsMerchant;
             }
@@ -115,38 +116,17 @@ public class MerchantDaoImpl implements IMerchant{
     }
 
     @Override
-    public Merchant getByNameToDisplay(String nameToDisplay) {
-        try {
-            PreparedStatement ps = con.prepareStatement("SELECT id, introduction, description FROM visitor WHERE nameToDisplay=?");
-            ps.setString(1, nameToDisplay);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                Merchant rsMerchant = new Merchant();
-                rsMerchant.setId(rs.getLong(1));
-                rsMerchant.setNameToDisplay(nameToDisplay);
-                rsMerchant.setIntroduction(rs.getString(2));
-                rsMerchant.setDescription(rs.getString(3));
-                rsMerchant.setTownIds(getTownIds(rs.getLong(1)));
-                return rsMerchant;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(MerchantDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    @Override
-    public List<Merchant> getByTown(Town pTown) {
+    public List<Merchant> getByNameToDisplay(String nameToDisplay) {
         List<Merchant> rsList = new ArrayList<>();
         try {
-            PreparedStatement ps =con.prepareStatement("select merchant.id, merchant.nameToDisplay, merchant.introduction, merchant.description " +
-            "From merchant INNER JOIN towns_of_merchant ON merchant.id=towns_of_merchant.merchant_id WHERE towns_of_merchant.town_id=?");
-            ps.setLong(1, pTown.getId());
+            PreparedStatement ps = con.prepareStatement("SELECT id, visitor_id, introduction, description FROM visitor WHERE nameToDisplay=?");
+            ps.setString(1, nameToDisplay);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
+            while(rs.next()) {
                 Merchant rsMerchant = new Merchant();
                 rsMerchant.setId(rs.getLong(1));
-                rsMerchant.setNameToDisplay(rs.getString(2));
+                rsMerchant.setVisitorId(rs.getLong(2));
+                rsMerchant.setNameToDisplay(nameToDisplay);
                 rsMerchant.setIntroduction(rs.getString(3));
                 rsMerchant.setDescription(rs.getString(4));
                 rsMerchant.setTownIds(getTownIds(rs.getLong(1)));
@@ -158,20 +138,30 @@ public class MerchantDaoImpl implements IMerchant{
         return rsList;
     }
 
-     @Override
-    public long getVisitorId(Merchant pMerchant) {
+    @Override
+    public List<Merchant> getByTown(Town pTown) {
+        List<Merchant> rsList = new ArrayList<>();
         try {
-            PreparedStatement ps = con.prepareStatement("select visitor.id, From merchant INNER JOIN visitor ON merchant.visitor_id=visitor.id WHERE merchant.id=?");
-            ps.setLong(1, pMerchant.getId());
+            PreparedStatement ps =con.prepareStatement("select merchant.id, merchant.visitor_id, merchant.nameToDisplay, merchant.introduction, merchant.description " +
+            "From merchant INNER JOIN towns_of_merchant ON merchant.id=towns_of_merchant.merchant_id WHERE towns_of_merchant.town_id=?");
+            ps.setLong(1, pTown.getId());
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {                
-                return rs.getLong(1);
+            while (rs.next()) {                
+                Merchant rsMerchant = new Merchant();
+                rsMerchant.setId(rs.getLong(1));
+                rsMerchant.setVisitorId(2);
+                rsMerchant.setNameToDisplay(rs.getString(3));
+                rsMerchant.setIntroduction(rs.getString(4));
+                rsMerchant.setDescription(rs.getString(5));
+                rsMerchant.setTownIds(getTownIds(rs.getLong(1)));
+                rsList.add(rsMerchant);
             }
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(MerchantDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return  0;
+        return rsList;
     }
+    
     
     private void insertTownIds(long pMerchantId, List<Long> pTownIds) {
         try {

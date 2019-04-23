@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,7 +22,8 @@
                 <div class="form-group row"><input type="submit" value="Bejelentkezés" class="btn btn-light"></div>            
             </form>
             <div style="float: right;">
-                <a href="reg"><input type="submit" value="Regisztracio" class="btn btn-success"></a>
+                <a href="<c:url value="reg"><c:param name="ismerchant" value="${ismerchant}"/></c:url>"><input type="submit" value="Regisztracio" class="btn btn-success"></a>
+               <!-- <a href="reg"><input type="submit" value="Regisztracio" class="btn btn-success"></a>-->
             </div>
         </div>
     </body>

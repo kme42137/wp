@@ -32,6 +32,7 @@ public class RegServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setAttribute("ismerchant", request.getParameter("ismerchant"));
         getServletContext().getRequestDispatcher("/reg.jsp").include(request, response);
     }
 
@@ -56,9 +57,9 @@ public class RegServlet extends HttpServlet {
         if (request.getParameter("ppassword1").equals(request.getParameter("ppassword2"))) {
             newVisitor.setPassword(request.getParameter("ppassword1"));
         } else {
-            messages.put("ppassword1", "Nem egyezik a ket megadott jelszo.");
+            messages.put("ppassword1", "Nem egyezik a két megadott jelszó.");
         }
-        newVisitor.setIsMerchant(true);
+        newVisitor.setIsMerchant(Boolean.valueOf(request.getParameter("ismerchant")));
         VisitorServiceImpl visitorServ = new VisitorServiceImpl();
         try {
             visitorServ.create(newVisitor);

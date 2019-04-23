@@ -67,7 +67,7 @@ public class VisitorServiceImpl {
         if (temp != null && !temp.geteMail().equals(dao.get(pOldVisitorId).geteMail())) {
             throw new WPException(WPErrors.USED_NICKNAME);
         } else {
-            return dao.create(pVisitor);
+            return dao.modify(pOldVisitorId, pVisitor);
         }
     
     }
