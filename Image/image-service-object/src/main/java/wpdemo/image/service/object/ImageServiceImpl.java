@@ -1,6 +1,6 @@
 package wpdemo.image.service.object;
 
-import java.util.List;
+import java.util.Map;
 import wpdemo.image.dao.jdbc.ImageDaoImpl;
 import wpdemo.image.dao.model.IImage;
 import wpdemo.image.dao.model.Image;
@@ -9,11 +9,16 @@ import wpdemo.image.dao.model.ImageType;
 /**
  * @author Kovacs Maria
  */
-public class ImageSerciceImpl {
+public class ImageServiceImpl {
     private IImage dao = new ImageDaoImpl();
     
     public Image create(Image pImage){
+       if(pImage.getType()==ImageType.PRODUCT && dao.getForProduct(pImage.getContactId())==null ||
+               pImage.getType()!= ImageType.PRODUCT && dao.getByTypeForMerhant(pImage.getContactId(), pImage.getType())==null){
         return dao.create(pImage);
+       }else{
+       return null;
+       }
     }
     
     public Image modify(long pOldImageId, Image pImage){
@@ -32,7 +37,7 @@ public class ImageSerciceImpl {
        return dao.getForProduct(pProductId);
     }
     
-    public List<Image> getForMerchant(long pMerchantId){
+    public Map<Integer, Image> getForMerchant(long pMerchantId){
         return dao.getForMerchant(pMerchantId);
     }
     

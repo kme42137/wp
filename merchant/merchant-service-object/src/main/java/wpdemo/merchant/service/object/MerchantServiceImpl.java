@@ -16,7 +16,9 @@ public class MerchantServiceImpl {
     private IMerchant dao= new MerchantDaoImpl();
     
     public Merchant create(Merchant pMerchant){
-        if (pMerchant.getNameToDisplay()== null || pMerchant.getNameToDisplay().isEmpty()
+        if(dao.getByVisitor(pMerchant.getVisitorId())!=null){
+            return null;
+        }else if (pMerchant.getNameToDisplay()== null || pMerchant.getNameToDisplay().isEmpty()
                 || pMerchant.getIntroduction()== null || pMerchant.getIntroduction().isEmpty()
                 || pMerchant.getDescription()== null || pMerchant.getDescription().isEmpty()
                 || pMerchant.getTownIds()== null || pMerchant.getTownIds().isEmpty()) {
@@ -43,6 +45,10 @@ public class MerchantServiceImpl {
 
     public Merchant get(long pMerchantId){
         return dao.get(pMerchantId);
+    }
+    
+    public Merchant getByVisitor(long pVisitorId){
+        return dao.getByVisitor(pVisitorId);
     }
     
     public Merchant getByProduct(long pProductId){

@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import wpdemo.image.dao.model.IImage;
@@ -29,6 +29,7 @@ public class ImageDaoImpl implements IImage {
         }
     }
 
+    @Override
     public Image create(Image pImage) {
         try {
             PreparedStatement ps = con.prepareStatement("INSERT INTO image(img_type, contact_id, location) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
@@ -47,6 +48,7 @@ public class ImageDaoImpl implements IImage {
         return null;
     }
 
+    @Override
     public Image modify(long pOldImageId, Image pImage) {
         try {
             PreparedStatement ps = con.prepareStatement("UPDATE image SET img_type=? contact_id=? location=? WHERE id=?");
@@ -63,6 +65,7 @@ public class ImageDaoImpl implements IImage {
         return null;
     }
 
+    @Override
     public boolean delete(long pIamgeId) {
         try {
             PreparedStatement ps = con.prepareStatement("DELETE FROM image WHERE id=?");
@@ -77,6 +80,7 @@ public class ImageDaoImpl implements IImage {
         return false;
     }
 
+    @Override
     public Image get(long pImageId) {
         try {
             PreparedStatement ps = con.prepareStatement("SELECT img_type, contact_id, location FROM image WHERE id=?");
@@ -96,6 +100,7 @@ public class ImageDaoImpl implements IImage {
         return null;
     }
 
+    @Override
     public Image getForProduct(long pProductId){
         try {
             PreparedStatement ps = con.prepareStatement("SELECT id, location FROM image WHERE contact_id=? AND img_type=0");
@@ -115,8 +120,9 @@ public class ImageDaoImpl implements IImage {
         return null;
     }    
 
-    public List<Image> getForMerchant(long pMerchantId){
-        List<Image> rsList= new ArrayList<>();
+    @Override
+    public Map<Integer, Image> getForMerchant(long pMerchantId){
+        Map<Integer, Image> rsMap = new HashMap<>();
          try {
             PreparedStatement ps = con.prepareStatement("SELECT id, img_type, location FROM image WHERE contact_id=? AND img_type!=0");
             ps.setLong(1, pMerchantId);
@@ -127,14 +133,15 @@ public class ImageDaoImpl implements IImage {
                 rsImage.setType(ImageType.values()[rs.getInt(2)]);
                 rsImage.setContactId(pMerchantId);
                 rsImage.setLocation(rs.getString(3));
-                rsList.add(rsImage);
+                rsMap.put(rs.getInt(2), rsImage);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ImageDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return rsList;
+        return rsMap;
     }
 
+    @Override
     public Image getByTypeForMerhant(long pMerchantId, ImageType pType){
         try {
             PreparedStatement ps = con.prepareStatement("SELECT id, location FROM image WHERE contact_id=? AND img_type=?");

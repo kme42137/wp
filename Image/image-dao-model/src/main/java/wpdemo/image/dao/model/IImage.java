@@ -1,6 +1,7 @@
 package wpdemo.image.dao.model;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kovacs Maria
@@ -17,7 +18,7 @@ public interface IImage {
     
     public Image getForProduct(long pProductId);
     
-    public List<Image> getForMerchant(long pMerchantId);
+    public Map<Integer, Image> getForMerchant(long pMerchantId);
     
     public Image getByTypeForMerhant (long pMerchantId, ImageType pType);
     

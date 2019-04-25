@@ -17,6 +17,8 @@ public interface IMerchant {
 
     public Merchant get(long pMerchantId);
     
+    public Merchant getByVisitor(long pVisitorId);
+    
     public Merchant getByProduct(long pProductId);
     
     public List<Merchant> getByNameToDisplay(String nameToDisplay);

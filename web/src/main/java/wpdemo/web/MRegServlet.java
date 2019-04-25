@@ -37,6 +37,12 @@ public class MRegServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         TownServiceImpl townServ = new TownServiceImpl();
         request.setAttribute("townList", townServ.getAll());
+        Visitor actVisitor = (Visitor) request.getSession().getAttribute("user");
+        MerchantServiceImpl merchantServ = new MerchantServiceImpl();
+        Merchant actMerchant = merchantServ.getByVisitor(actVisitor.getVisitorId());
+        if (request.getParameter("userinput") == null) {
+            request.setAttribute("userinput", actMerchant);
+        }
         getServletContext().getRequestDispatcher("/mreg.jsp").include(request, response);
     }
 
@@ -62,14 +68,20 @@ public class MRegServlet extends HttpServlet {
         newMerchant.setDescription(request.getParameter("pdescription"));
         List<Long> townList = new ArrayList<>();
         long temp;
-        for (int i = 1; i < 5; i++) {                        
+        for (int i = 1; i < 5; i++) {
             if (request.getParameter("town" + i) != null) {
                 townList.add(Long.parseLong(request.getParameter("town" + i)));
             }
         }
         newMerchant.setTownIds(townList);
         try {
-            merchantServ.create(newMerchant);
+            Visitor actVisitor = (Visitor) request.getSession().getAttribute("user");
+            Merchant actMerchant = merchantServ.getByVisitor(actVisitor.getVisitorId());
+            if (actMerchant == null) {
+                merchantServ.create(newMerchant);
+            } else {
+                merchantServ.modify(actMerchant.getId(), newMerchant);
+            }
             inputOk = true;
         } catch (WPException e) {
             if (newMerchant.getNameToDisplay() == null || newMerchant.getNameToDisplay().isEmpty()) {
@@ -90,7 +102,7 @@ public class MRegServlet extends HttpServlet {
             request.setAttribute("messages", messages);
             doGet(request, response);
         } else {
-            response.sendRedirect("merchant.jsp");
+            response.sendRedirect("mimgupload");
         }
     }
 
