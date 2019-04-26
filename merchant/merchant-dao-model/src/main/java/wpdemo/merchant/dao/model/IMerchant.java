@@ -25,4 +25,6 @@ public interface IMerchant {
     
     public List<Merchant> getByTown(Town pTown); 
     
+    public List<Merchant> search(long pTownId, String pString);
+    
 }

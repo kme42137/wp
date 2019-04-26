@@ -20,8 +20,8 @@
                             Látogatóknak
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Valami tuti</a>
-                            <a class="dropdown-item" href="#">Valami más</a>
+                            <a class="dropdown-item" href="#">A kínált termékek</a>
+                            <a class="dropdown-item" href="msearch">Keresés az eladók között</a>
                             <div class="dropdown-divider"></div>
                             <a href="<c:url value="login"><c:param name="ismerchant" value="${false}"/></c:url>">Bejelentkezés/regisztráció</a>                            
                             </div>
@@ -46,6 +46,8 @@
                                 ${sessionScope.user.nickname}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">A kínált termékek</a>
+                                <a class="dropdown-item" href="msearch">Keresés az eladók között</a>
                                 <a class="dropdown-item" href="#">Árucikk rögzítése</a>
                                 <a class="dropdown-item" href="mreg">Tremelői tevékenység leírása</a>                     
                                 <a class="dropdown-item" href="modreg">Személyes adatok módosítása</a>
@@ -59,7 +61,9 @@
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 ${sessionScope.user.nickname}
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                                                   
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">  
+                                <a class="dropdown-item" href="#">A kínált termékek</a>
+                                <a class="dropdown-item" href="msearch">Keresés az eladók között</a>
                                 <a class="dropdown-item" href="modreg">Személyes adatok módosítása</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="logout">Kijelentkezés</a>

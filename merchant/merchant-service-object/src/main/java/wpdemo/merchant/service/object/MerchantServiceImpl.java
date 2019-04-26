@@ -62,5 +62,9 @@ public class MerchantServiceImpl {
     public List<Merchant> getByTown(Town pTown){
         return dao.getByTown(pTown);
     } 
+    
+        public List<Merchant> search(long pTownId, String pString){
+            return dao.search(pTownId, pString);
+        }
         
 }

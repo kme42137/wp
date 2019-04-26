@@ -40,7 +40,7 @@ public class MRegServlet extends HttpServlet {
         Visitor actVisitor = (Visitor) request.getSession().getAttribute("user");
         MerchantServiceImpl merchantServ = new MerchantServiceImpl();
         Merchant actMerchant = merchantServ.getByVisitor(actVisitor.getVisitorId());
-        if (request.getParameter("userinput") == null) {
+        if (request.getAttribute("userinput") == null) {
             request.setAttribute("userinput", actMerchant);
         }
         getServletContext().getRequestDispatcher("/mreg.jsp").include(request, response);

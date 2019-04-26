@@ -1,5 +1,6 @@
 package wpdemo.merchant.dao.jdbc;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,16 +15,15 @@ import wpdemo.merchant.dao.model.Merchant;
 import wpdemo.support.utill.ConnectionUtil;
 import wpdemo.town.dao.model.Town;
 
-
-
 /**
  * @author Kovacs Maria
  */
-public class MerchantDaoImpl implements IMerchant{
+public class MerchantDaoImpl implements IMerchant {
+
     private Connection con;
 
     public MerchantDaoImpl() {
-         try {
+        try {
             con = ConnectionUtil.getConnection();
         } catch (Exception e) {
             System.exit(100);
@@ -36,8 +36,8 @@ public class MerchantDaoImpl implements IMerchant{
             PreparedStatement ps = con.prepareStatement("INSERT INTO merchant(visitor_id, nameToDisplay, introduction, description) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, pMerchant.getVisitorId());
             ps.setString(2, pMerchant.getNameToDisplay());
-            ps.setString(3,pMerchant.getIntroduction());
-            ps.setString(4, pMerchant.getDescription());            
+            ps.setString(3, pMerchant.getIntroduction());
+            ps.setString(4, pMerchant.getDescription());
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
@@ -49,17 +49,17 @@ public class MerchantDaoImpl implements IMerchant{
             Logger.getLogger(MerchantDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-        
+
     }
 
     //visitor_id-hz nem nyul
     @Override
     public Merchant modify(long pOldMerchantId, Merchant pMerchant) {
-         try {
+        try {
             PreparedStatement ps = con.prepareStatement("UPDATE merchant SET nameToDisplay=?, introduction=?, description=? WHERE id=?");
             ps.setString(1, pMerchant.getNameToDisplay());
             ps.setString(2, pMerchant.getIntroduction());
-            ps.setString(3, pMerchant.getDescription());            
+            ps.setString(3, pMerchant.getDescription());
             ps.setLong(4, pOldMerchantId);
             ps.executeUpdate();
             insertTownIds(pOldMerchantId, pMerchant.getTownIds());
@@ -90,7 +90,7 @@ public class MerchantDaoImpl implements IMerchant{
 
     @Override
     public Merchant get(long pMerchantId) {
-     try {
+        try {
             PreparedStatement ps = con.prepareStatement("SELECT visitor_id, nameToDisplay, introduction, description FROM merchant WHERE id=?");
             ps.setLong(1, pMerchantId);
             ResultSet rs = ps.executeQuery();
@@ -122,7 +122,7 @@ public class MerchantDaoImpl implements IMerchant{
             PreparedStatement ps = con.prepareStatement("SELECT id, visitor_id, introduction, description FROM merchant WHERE nameToDisplay=?");
             ps.setString(1, nameToDisplay);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 Merchant rsMerchant = new Merchant();
                 rsMerchant.setId(rs.getLong(1));
                 rsMerchant.setVisitorId(rs.getLong(2));
@@ -142,11 +142,11 @@ public class MerchantDaoImpl implements IMerchant{
     public List<Merchant> getByTown(Town pTown) {
         List<Merchant> rsList = new ArrayList<>();
         try {
-            PreparedStatement ps =con.prepareStatement("select merchant.id, merchant.visitor_id, merchant.nameToDisplay, merchant.introduction, merchant.description " +
-            "From merchant INNER JOIN towns_of_merchant ON merchant.id=towns_of_merchant.merchant_id WHERE towns_of_merchant.town_id=?");
+            PreparedStatement ps = con.prepareStatement("select merchant.id, merchant.visitor_id, merchant.nameToDisplay, merchant.introduction, merchant.description "
+                    + "From merchant INNER JOIN towns_of_merchant ON merchant.id=towns_of_merchant.merchant_id WHERE towns_of_merchant.town_id=?");
             ps.setLong(1, pTown.getId());
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 Merchant rsMerchant = new Merchant();
                 rsMerchant.setId(rs.getLong(1));
                 rsMerchant.setVisitorId(2);
@@ -161,12 +161,11 @@ public class MerchantDaoImpl implements IMerchant{
         }
         return rsList;
     }
-    
-    
+
     private void insertTownIds(long pMerchantId, List<Long> pTownIds) {
         try {
             StringBuilder str = new StringBuilder("INSERT IGNORE INTO towns_of_merchant VALUES (");
-            str.append(pTownIds.get(0));            
+            str.append(pTownIds.get(0));
             str.append(",");
             str.append(pMerchantId);
             str.append(")");
@@ -175,7 +174,7 @@ public class MerchantDaoImpl implements IMerchant{
                 str.append(", (");
                 str.append(pTownIds.get(i));
                 str.append(",");
-                str.append(pMerchantId);               
+                str.append(pMerchantId);
                 str.append(")");
                 i++;
             }
@@ -186,8 +185,8 @@ public class MerchantDaoImpl implements IMerchant{
         }
 
     }
-    
-     private void deleteTownIds(long pMerchantId, List<Long> pTownIds) {
+
+    private void deleteTownIds(long pMerchantId, List<Long> pTownIds) {
         try {
             StringBuilder str = new StringBuilder("DELETE FROM towns_of_merchant WHERE town_id NOT IN (");
             str.append(pTownIds.get(0));
@@ -205,8 +204,8 @@ public class MerchantDaoImpl implements IMerchant{
             Logger.getLogger(MerchantDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-     
-     private List<Long> getTownIds(long pMerchantId) {
+
+    private List<Long> getTownIds(long pMerchantId) {
         try {
             PreparedStatement ps = con.prepareStatement("SELECT town_id FROM towns_of_merchant WHERE merchant_id=?");
             ps.setLong(1, pMerchantId);
@@ -242,6 +241,39 @@ public class MerchantDaoImpl implements IMerchant{
             Logger.getLogger(MerchantDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    @Override
+    public List<Merchant> search(long pTownId, String pString) {
+        List<Merchant> rsList = new ArrayList<>();
+        try {
+            PreparedStatement ps;
+            if (pTownId == 0) {
+                ps = con.prepareStatement("SELECT id, visitor_id, nameToDisplay, introduction, description FROM merchant WHERE MATCH(nameToDisplay, introduction, description) AGAINST(? IN BOOLEAN MODE )");
+                ps.setString(1, pString);
+            } else {
+                ps = con.prepareStatement("SELECT merchant.id, merchant.visitor_id, merchant.nameToDisplay, merchant.introduction, merchant.description "
+                        + "FROM merchant INNER JOIN towns_of_merchant ON merchant.id=towns_of_merchant.merchant_id WHERE towns_of_merchant.town_id=? "
+                        + "AND MATCH(merchant.nameToDisplay, merchant.introduction, merchant.description) AGAINST(? IN BOOLEAN MODE )");
+                ps.setLong(1, pTownId);
+                ps.setString(2, pString);
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Merchant rsMerchant = new Merchant();
+                rsMerchant.setId(rs.getLong(1));
+                rsMerchant.setVisitorId(2);
+                rsMerchant.setNameToDisplay(rs.getString(3));
+                rsMerchant.setIntroduction(rs.getString(4));
+                rsMerchant.setDescription(rs.getString(5));
+                rsMerchant.setTownIds(getTownIds(rs.getLong(1)));
+                rsList.add(rsMerchant);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MerchantDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rsList;
+
     }
 
 }

@@ -18,8 +18,10 @@
                 </div>
                 <!-- /.col-lg-8 -->
                 <div class="col-lg-5">
-                    <h1 class="font-weight-light">${merchant.nameToDisplay}</h1>
-                    <p>${merchant.introduction}</p>        
+                    <div class="font-weight-light">
+                        <h1>${merchant.nameToDisplay}</h1>
+                        <p>${merchant.introduction}</p>
+                    </div>
                 </div>
                 <!-- /.col-md-4 -->
             </div>
@@ -30,7 +32,9 @@
                 </div>
                 <!-- /.col-lg-8 -->
                 <div class="col-lg-5">        
-                    <p>${merchant.description}</p>        
+                    <div class="font-weight-light">
+                        <p>${merchant.description}</p> 
+                    </div>
                 </div>
                 <!-- /.col-md-4 -->
             </div>
@@ -40,11 +44,13 @@
                 </div>
                 <!-- /.col-lg-8 -->
                 <div class="col-lg-5">        
-                    <h4 class="font-weight-light">Az alabbi telepuleseken vagyok elerheto:</h4>
-                    <c:forEach var="town" items="${towns}">
-                        <p>${town.name}</p>
-                    </c:forEach>
-                        <h4 class="font-weight-light">e-mail: ${email}</h4>
+                    <div class="font-weight-light">
+                        <h4>Az alabbi telepuleseken vagyok elerheto:</h4>
+                        <c:forEach var="town" items="${towns}">
+                            <p>${town.name}</p>
+                        </c:forEach>
+                        <h4>e-mail: ${email}</h4>
+                    </div>
                 </div>
                 <!-- /.col-md-4 -->
             </div>
