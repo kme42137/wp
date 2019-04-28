@@ -10,16 +10,16 @@
     <body>
         <jsp:include page="menu.jsp"></jsp:include>            
             <div class="container">
-                <form action="msearch" method="post">                                                             
+                <form action="psearch" method="post">                                                             
                     <div class="form-group"> 
                         <div class="row">
-                            <div class="col">
-                                <select class="form-control" name="townid">
-                                    <option value="0" selected> -- város választás -- </option>
-                                <c:forEach items="${townList}" var="town">                                                                
-                                    <option value="${town.id}">${town.name}</option>                                                                                 
+                            <div class="col">                                                               
+                                <select class="form-control" name="ptype">
+                                    <option  disabled selected value> -- termék típus választás -- </option>
+                                <c:forEach items="${types}" var="t">                                                                
+                                    <option value="${t.key}">${t.value}</option>                                                                                 
                                 </c:forEach>                                
-                            </select>
+                            </select>                                                                
                         </div>
                         <div class="col">  
                             <input name="qstring" class="form-control" placeholder="Keresett szöveg...">
@@ -31,10 +31,10 @@
             <c:choose>            
                 <c:when test="${not empty rslist}">
                     <h3>Találati lista:</h3>
-                    <c:forEach items="${rslist}" var="merchant">
+                    <c:forEach items="${rslist}" var="product">
                         <div class="row">
                             <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
-                                <a href="<c:url value="getmerchant"><c:param name="merchantid" value="${merchant.id}"/></c:url>"><h4>${merchant.nameToDisplay}</h4></a>
+                                <a href="<c:url value="getmerchant"><c:param name="merchantid" value="${product.contactId}"/></c:url>"><h4>termelo</h4></a>
                                 <p>${merchant.introduction}</p>    
                             </div>
                             <div class="col-xs-6 col-sm-9 col-md-9 col-lg-10 title">

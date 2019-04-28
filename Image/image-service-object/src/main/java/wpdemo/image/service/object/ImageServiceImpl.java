@@ -25,12 +25,12 @@ public class ImageServiceImpl {
         return dao.modify(pOldImageId, pImage);
     }
 
-    public boolean delete(long pIamgeId){
-        return dao.delete(pIamgeId);
+    public boolean delete(Image pImage){
+        return dao.delete(pImage);
     }
 
-    public Image get(long pImageId){
-        return dao.get(pImageId);
+     public Image get(long pImageId, boolean isProduct){
+        return dao.get(pImageId, isProduct);
     }
     
     public Image getForProduct(long pProductId){

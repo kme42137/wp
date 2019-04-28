@@ -20,10 +20,12 @@ import wpdemo.support.utill.ConnectionUtil;
 public class ImageDaoImpl implements IImage {
 
     private Connection con;
+    private PImageDao imgDao;
 
     public ImageDaoImpl() {
         try {
             con = ConnectionUtil.getConnection();
+            imgDao = new PImageDao();
         } catch (Exception e) {
             System.exit(100);
         }
@@ -31,6 +33,9 @@ public class ImageDaoImpl implements IImage {
 
     @Override
     public Image create(Image pImage) {
+        if(pImage.getType()==ImageType.PRODUCT){
+            return imgDao.create(pImage);
+        }
         try {
             PreparedStatement ps = con.prepareStatement("INSERT INTO image(img_type, contact_id, location) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, pImage.getType().getId());
@@ -50,6 +55,9 @@ public class ImageDaoImpl implements IImage {
 
     @Override
     public Image modify(long pOldImageId, Image pImage) {
+        if(pImage.getType()==ImageType.PRODUCT){
+            return imgDao.modify(pOldImageId, pImage);
+        }
         try {
             PreparedStatement ps = con.prepareStatement("UPDATE image SET img_type=? contact_id=? location=? WHERE id=?");
             ps.setInt(1, pImage.getType().getId());
@@ -66,10 +74,13 @@ public class ImageDaoImpl implements IImage {
     }
 
     @Override
-    public boolean delete(long pIamgeId) {
+    public boolean delete(Image pImage) {
+        if(pImage.getType()==ImageType.PRODUCT){
+            return imgDao.delete(pImage.getId());
+        }
         try {
             PreparedStatement ps = con.prepareStatement("DELETE FROM image WHERE id=?");
-            ps.setLong(1, pIamgeId);
+            ps.setLong(1, pImage.getId());
             if (ps.executeUpdate() > 0) {
                 return true;
             }
@@ -81,7 +92,10 @@ public class ImageDaoImpl implements IImage {
     }
 
     @Override
-    public Image get(long pImageId) {
+    public Image get(long pImageId, boolean isProduct) {
+        if(isProduct){
+            return imgDao.get(pImageId);
+        }
         try {
             PreparedStatement ps = con.prepareStatement("SELECT img_type, contact_id, location FROM image WHERE id=?");
             ps.setLong(1, pImageId);
@@ -102,22 +116,7 @@ public class ImageDaoImpl implements IImage {
 
     @Override
     public Image getForProduct(long pProductId){
-        try {
-            PreparedStatement ps = con.prepareStatement("SELECT id, location FROM image WHERE contact_id=? AND img_type=0");
-            ps.setLong(1, pProductId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                Image rsImage = new Image();
-                rsImage.setId(rs.getLong(1));
-                rsImage.setType(ImageType.PRODUCT);
-                rsImage.setContactId(pProductId);
-                rsImage.setLocation(rs.getString(2));                
-                return rsImage;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ImageDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        return imgDao.getForProduct(pProductId);
     }    
 
     @Override

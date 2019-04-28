@@ -44,3 +44,22 @@ CREATE TABLE `image` (
   PRIMARY KEY (`id`),
   CONSTRAINT `IMAGE_CONSTRAINT` FOREIGN KEY (`contact_id`) REFERENCES `merchant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `product` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`name` varchar(80) NOT NULL,
+ 	`merchant_id` bigint(20) NOT NULL,
+	`product_type` tinyint(3) NOT NULL,
+	`description` TEXT DEFAULT NULL,	
+	PRIMARY KEY (`id`),
+	CONSTRAINT `PRODUCT_CONSTRAINT` FOREIGN KEY (`merchant_id`) REFERENCES `merchant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FULLTEXT ndx (`name`, `description`)
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `product_image` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `contact_id` bigint(20) NOT NULL,
+  `location` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `PRODUCT_IMAGE_CONSTRAINT` FOREIGN KEY (`contact_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;

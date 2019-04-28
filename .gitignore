@@ -16,3 +16,5 @@
 /town/town-service-object/target/
 /Image/image-dao-jdbc/target/
 /Image/image-service-object/target/
+/product/product-dao-jdbc/target/
+/product/product-service-object/target/

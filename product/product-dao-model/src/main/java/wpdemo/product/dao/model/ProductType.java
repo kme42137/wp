@@ -7,9 +7,12 @@ package wpdemo.product.dao.model;
 public enum ProductType {
     VEGETABLE(0, "Zöldség"),
     FRUIT(1, "Gyümölcs"),
-    MEAT(2, "Hús"),
+    MEAT(2, "Hús, hal, felvágott"),
     BAKERY(3, "Pékáru"),
-    DAIRY(4, "Tejtermék");
+    DAIRY_EGG(4, "Tejtermék, tojás"),
+    SWEETS(5, "Édesség"),
+    COCOA_COFFEE_TEA(6, "Kakaó, kávé, tea"),
+    ALCOHOL(7, "Alkoholos italok");
     private final int id;
     private final String msg;
 

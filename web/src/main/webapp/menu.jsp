@@ -13,6 +13,15 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Keresés
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#">Termékek</a>
+                            <a class="dropdown-item" href="msearch">Eladók</a>                                                      
+                            </div>
+                        </li>  
             <c:choose>
                 <c:when test="${sessionScope.user == null}">
                     <li class="nav-item dropdown">
@@ -20,8 +29,7 @@
                             Látogatóknak
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">A kínált termékek</a>
-                            <a class="dropdown-item" href="msearch">Keresés az eladók között</a>
+                            <a class="dropdown-item" href="#">Fejlesztés alatt lévő funkciók</a>                           
                             <div class="dropdown-divider"></div>
                             <a href="<c:url value="login"><c:param name="ismerchant" value="${false}"/></c:url>">Bejelentkezés/regisztráció</a>                            
                             </div>
@@ -30,9 +38,8 @@
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Termelőknek
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="#">Valami tuti</a>
-                                <a class="dropdown-item" href="#">Valami más</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                                
+                                <a class="dropdown-item" href="#">Fejlesztés alatt lévő funkciók</a>
                                 <div class="dropdown-divider"></div>
                                 <a href="<c:url value="login"><c:param name="ismerchant" value="${true}"/></c:url>">Bejelentkezés/regisztráció</a>                            
                             </div>
@@ -45,10 +52,8 @@
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 ${sessionScope.user.nickname}
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="#">A kínált termékek</a>
-                                <a class="dropdown-item" href="msearch">Keresés az eladók között</a>
-                                <a class="dropdown-item" href="#">Árucikk rögzítése</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                               
+                                <a class="dropdown-item" href="preg">Árucikk rögzítése</a>
                                 <a class="dropdown-item" href="mreg">Tremelői tevékenység leírása</a>                     
                                 <a class="dropdown-item" href="modreg">Személyes adatok módosítása</a>
                                 <div class="dropdown-divider"></div>
@@ -61,9 +66,7 @@
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 ${sessionScope.user.nickname}
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">  
-                                <a class="dropdown-item" href="#">A kínált termékek</a>
-                                <a class="dropdown-item" href="msearch">Keresés az eladók között</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                                  
                                 <a class="dropdown-item" href="modreg">Személyes adatok módosítása</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="logout">Kijelentkezés</a>

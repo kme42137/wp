@@ -1,6 +1,5 @@
 package wpdemo.image.dao.model;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,9 +11,9 @@ public interface IImage {
     
     public Image modify(long pOldImageId, Image pImage);
 
-    public boolean delete(long pIamgeId);
+    public boolean delete(Image pImage);
 
-    public Image get(long pImageId);
+    public Image get(long pImageId, boolean isProduct);
     
     public Image getForProduct(long pProductId);
     

@@ -8,18 +8,16 @@ public class Product {
     private String name;
     private long merchantId;
     private ProductType type;
-    private long imageId;
     private String description;
 
     public Product() {
     }
 
-    public Product(long id, String name, long merchantId, ProductType type, long imageId, String description) {
+    public Product(long id, String name, long merchantId, ProductType type, String description) {
         this.id = id;
         this.name = name;
         this.merchantId = merchantId;
-        this.type = type;
-        this.imageId = imageId;
+        this.type = type;        
         this.description = description;
     }
 
@@ -53,14 +51,6 @@ public class Product {
 
     public void setType(ProductType type) {
         this.type = type;
-    }
-
-    public long getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(long imageId) {
-        this.imageId = imageId;
     }
 
     public String getDescription() {

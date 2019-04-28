@@ -10,5 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>product-dao-model</module>
+        <module>product-dao-jdbc</module>
+        <module>product-service-object</module>
     </modules>
 </project>
