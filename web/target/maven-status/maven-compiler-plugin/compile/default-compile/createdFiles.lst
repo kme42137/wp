@@ -1,0 +1,11 @@
+wpdemo\web\LogoutServlet.class
+wpdemo\web\ProductSearchServlet.class
+wpdemo\web\ProductRegServlet.class
+wpdemo\web\MImgUploadServlet.class
+wpdemo\web\MRegServlet.class
+wpdemo\web\GetImgServlet.class
+wpdemo\web\ModRegServlet.class
+wpdemo\web\MerchantSearhServlet.class
+wpdemo\web\LoginServlet.class
+wpdemo\web\RegServlet.class
+wpdemo\web\GetMerchantServlet.class
