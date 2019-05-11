@@ -4,50 +4,51 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
-        <title>Home</title>
+        <title>Web piac</title>
+        <style>
+            header {	
+                background-color: #444;
+                background: url("images/buzamezo.jpg") no-repeat center top;
+                padding-top: 150px;
+                background-attachment: relative;
+                background-position: center center;
+                min-height: 650px;
+                width: 100%;
+
+                -webkit-background-size: 100%;
+                -moz-background-size: 100%;
+                -o-background-size: 100%;
+                background-size: 100%;
+
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+
+
+
+            header,h1 {
+                margin-top: 50px;
+                margin-bottom: 15px;
+                color: #fff;                
+            }
+        </style>
     </head>
     <body>
-          <jsp:include page="menu.jsp"></jsp:include>
-       <div class="bd-example">
-  <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-      <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner">
-      <div class="carousel-item active" data-interval="1000">
-        <img src="images/garf1.gif" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-          <h5>First slide label</h5>
-          <p>Bocs, ki kellett probalnom</p>
-        </div>
-      </div>
-      <div class="carousel-item" data-interval="1000">
-        <img src="images/garf2.gif" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-          <h5>Second slide label</h5>
-          <p>Mert annyira jol nezett ki</p>
-        </div>
-      </div>
-      <div class="carousel-item" data-interval="1000">
-        <img src="images/garf3.gif" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-          <h5>Third slide label</h5>
-          <p>es csak copy + paste</p>
-        </div>
-      </div>
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
-</div>
-       
+
+        <jsp:include page="menu.jsp"></jsp:include>
+
+        <header>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h1 class="font-weight-light">Web Piac</h1>
+                        <h2 class="lead">Ha tudni szeretned, mit kapni a kornyeken</h2>
+                    </div>
+                </div>
+            </div>
+        </header>
+
     </body>
 </html>

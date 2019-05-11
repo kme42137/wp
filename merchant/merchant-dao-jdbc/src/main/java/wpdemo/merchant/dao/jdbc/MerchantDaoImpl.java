@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import wpdemo.merchant.dao.model.IMerchant;
 import wpdemo.merchant.dao.model.Merchant;
 import wpdemo.support.utill.ConnectionUtil;
-import wpdemo.town.dao.model.Town;
 
 /**
  * @author Kovacs Maria
@@ -138,12 +137,12 @@ public class MerchantDaoImpl implements IMerchant {
     }
 
     @Override
-    public List<Merchant> getByTown(Town pTown) {
+    public List<Merchant> getByTown(long pTownId) {
         List<Merchant> rsList = new ArrayList<>();
         try {
             PreparedStatement ps = con.prepareStatement("select merchant.id, merchant.visitor_id, merchant.nameToDisplay, merchant.introduction, merchant.description "
                     + "From merchant INNER JOIN towns_of_merchant ON merchant.id=towns_of_merchant.merchant_id WHERE towns_of_merchant.town_id=?");
-            ps.setLong(1, pTown.getId());
+            ps.setLong(1, pTownId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Merchant rsMerchant = new Merchant();
@@ -245,34 +244,41 @@ public class MerchantDaoImpl implements IMerchant {
     @Override
     public List<Merchant> search(long pTownId, String pString) {
         List<Merchant> rsList = new ArrayList<>();
-        try {
-            PreparedStatement ps;
-            if (pTownId == 0) {
-                ps = con.prepareStatement("SELECT id, visitor_id, nameToDisplay, introduction, description FROM merchant WHERE MATCH(nameToDisplay, introduction, description) AGAINST(? IN BOOLEAN MODE )");
-                ps.setString(1, pString);
-            } else {
-                ps = con.prepareStatement("SELECT merchant.id, merchant.visitor_id, merchant.nameToDisplay, merchant.introduction, merchant.description "
-                        + "FROM merchant INNER JOIN towns_of_merchant ON merchant.id=towns_of_merchant.merchant_id WHERE towns_of_merchant.town_id=? "
-                        + "AND MATCH(merchant.nameToDisplay, merchant.introduction, merchant.description) AGAINST(? IN BOOLEAN MODE )");
-                ps.setLong(1, pTownId);
-                ps.setString(2, pString);
-            }
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Merchant rsMerchant = new Merchant();
-                rsMerchant.setId(rs.getLong(1));
-                rsMerchant.setVisitorId(2);
-                rsMerchant.setNameToDisplay(rs.getString(3));
-                rsMerchant.setIntroduction(rs.getString(4));
-                rsMerchant.setDescription(rs.getString(5));
-                rsMerchant.setTownIds(getTownIds(rs.getLong(1)));
-                rsList.add(rsMerchant);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(MerchantDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        if (pString.isEmpty() && pTownId == 0) {
+            return null;
         }
-        return rsList;
-
+        if (pString.isEmpty()) {
+            return getByTown(pTownId);
+        } else {
+            pString = ConnectionUtil.serchString(pString);
+            try {
+                PreparedStatement ps;
+                if (pTownId == 0) {
+                    ps = con.prepareStatement("SELECT id, visitor_id, nameToDisplay, introduction, description FROM merchant WHERE MATCH(nameToDisplay, introduction, description) AGAINST(? IN BOOLEAN MODE )");
+                    ps.setString(1, pString);
+                } else {
+                    ps = con.prepareStatement("SELECT merchant.id, merchant.visitor_id, merchant.nameToDisplay, merchant.introduction, merchant.description "
+                            + "FROM merchant INNER JOIN towns_of_merchant ON merchant.id=towns_of_merchant.merchant_id WHERE towns_of_merchant.town_id=? "
+                            + "AND MATCH(merchant.nameToDisplay, merchant.introduction, merchant.description) AGAINST(? IN BOOLEAN MODE )");
+                    ps.setLong(1, pTownId);
+                    ps.setString(2, pString);
+                }
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Merchant rsMerchant = new Merchant();
+                    rsMerchant.setId(rs.getLong(1));
+                    rsMerchant.setVisitorId(2);
+                    rsMerchant.setNameToDisplay(rs.getString(3));
+                    rsMerchant.setIntroduction(rs.getString(4));
+                    rsMerchant.setDescription(rs.getString(5));
+                    rsMerchant.setTownIds(getTownIds(rs.getLong(1)));
+                    rsList.add(rsMerchant);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MerchantDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return rsList;
+        }
     }
 
 }

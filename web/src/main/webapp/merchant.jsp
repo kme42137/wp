@@ -11,20 +11,21 @@
         <jsp:include page="menu.jsp"></jsp:include>     
 
             <div class="container">
-                <!-- Heading Row -->
                 <div class="row align-items-center my-5">
-                    <div class="col-lg-7">
+                    <div class="col-md-12">
                         <img class="img-fluid rounded mb-4 mb-lg-0" src="<c:out value="${images[(1).intValue()].location}"/>" alt="">
                 </div>
-                <!-- /.col-lg-8 -->
+
+            </div>
+            <div class="row">
+
                 <div class="col-lg-5">
                     <div class="font-weight-light">
                         <h1>${merchant.nameToDisplay}</h1>
-                        <p>${merchant.introduction}</p>
+
                     </div>
-                </div>
-                <!-- /.col-md-4 -->
-            </div>
+                </div>            
+            </div>                       
             <!-- /.row -->
             <div class="row align-items-center my-5">
                 <div class="col-lg-7">
@@ -33,6 +34,7 @@
                 <!-- /.col-lg-8 -->
                 <div class="col-lg-5">        
                     <div class="font-weight-light">
+                        <p>${merchant.introduction}</p>
                         <p>${merchant.description}</p> 
                     </div>
                 </div>
@@ -51,8 +53,7 @@
                         </c:forEach>
                         <h4>e-mail: ${email}</h4>
                     </div>
-                </div>
-                <!-- /.col-md-4 -->
+                </div>                
             </div>
         </div>                                                                                                   
     </body>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -16,13 +17,11 @@ import wpdemo.image.dao.model.Image;
 import wpdemo.image.dao.model.ImageType;
 import wpdemo.image.service.object.ImageServiceImpl;
 import wpdemo.merchant.dao.model.Merchant;
-import wpdemo.merchant.service.object.MerchantServiceImpl;
 import wpdemo.product.dao.model.Product;
 import wpdemo.product.dao.model.ProductType;
 import wpdemo.product.service.object.ProductServiceImpl;
 import wpdemo.support.utill.Const;
 import wpdemo.support.utill.WPException;
-import wpdemo.visitor.dao.model.Visitor;
 
 /**
  *
@@ -48,12 +47,28 @@ public class ProductRegServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        Map<Integer, String> types = new HashMap<>();
-        for (ProductType pt : Arrays.asList(ProductType.values())) {
-            types.put(pt.getId(), pt.getMsg());
+        if (request.getSession().getAttribute("merchant") == null) {
+            request.setAttribute("message", "Kérem először a tevékenységét leíró adatokat rögzítse!");
+            getServletContext().getRequestDispatcher("/error.jsp").include(request, response);
+        } else {
+            Map<Integer, String> types = new HashMap<>();
+            for (int i = 1; i < ProductType.values().length; i++) {
+                types.put(ProductType.values()[i].getId(), ProductType.values()[i].getMsg());
+            }
+            ProductServiceImpl productServ = new ProductServiceImpl();
+            request.setAttribute("types", types);
+            List<Product> prList = productServ.getByMerchant(((Merchant) request.getSession().getAttribute("merchant")).getId());
+            if (prList != null) {
+                ImageServiceImpl imageServ = new ImageServiceImpl();
+                Map<Long, String> images = new HashMap<>();
+                for (Product pr : prList) {
+                    images.put(pr.getId(), imageServ.getForProduct(pr.getId()).getLocation());
+                }
+                request.setAttribute("products", prList);
+                request.setAttribute("images", images);
+            }
+            getServletContext().getRequestDispatcher("/preg.jsp").include(request, response);
         }
-        request.setAttribute("types", types);
-        getServletContext().getRequestDispatcher("/preg.jsp").include(request, response);
     }
 
     /**
@@ -67,17 +82,23 @@ public class ProductRegServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        MerchantServiceImpl merhantServ = new MerchantServiceImpl();
-        Merchant actMechant = merhantServ.getByVisitor(((Visitor) request.getSession().getAttribute("user")).getVisitorId());
+        //MerchantServiceImpl merhantServ = new MerchantServiceImpl();
+        //Merchant actMechant = merhantServ.getByVisitor(((Visitor) request.getSession().getAttribute("user")).getVisitorId());
+        Merchant actMerchant = (Merchant) request.getSession().getAttribute("merchant");
         ProductServiceImpl productServ = new ProductServiceImpl();
-        Map<String, String> messages = new HashMap<>();        
+        Map<String, String> messages = new HashMap<>();
         Product newProduct = new Product();
-        newProduct.setMerchantId(actMechant.getId());
+        newProduct.setMerchantId(actMerchant.getId());
         newProduct.setName(request.getParameter("pname"));
         newProduct.setDescription(request.getParameter("pdescription"));
         try {
             newProduct.setType(ProductType.values()[Integer.parseInt(request.getParameter("ptype"))]);
-            newProduct = productServ.create(newProduct);            
+            if (request.getParameter("productid").isEmpty()) {
+                newProduct = productServ.create(newProduct);
+            } else {
+                newProduct.setId(Long.parseLong(request.getParameter("productid")));
+                productServ.modify(newProduct.getId(), newProduct);
+            }
         } catch (WPException e) {
             if (newProduct.getName() == null || newProduct.getName().isEmpty()) {
                 messages.put("pname", e.getMessage());
@@ -91,22 +112,20 @@ public class ProductRegServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             messages.put("ptype", "Válasszon egyet a listából");
         }
+        if (messages.isEmpty()) {
+            request.setAttribute("productid", newProduct.getId());
+            ImageServiceImpl imageServ = new ImageServiceImpl();
+            Image savedImage = imageServ.getForProduct(newProduct.getId());
+            Image newImage = new Image();
 
-        ImageServiceImpl imageServ = new ImageServiceImpl();
-        Image savedImage = imageServ.getForProduct(newProduct.getId());
-        Image newImage = new Image();
-
-        File fileSaveDir = new File(Const.SAVE_DIR);
-        if (!fileSaveDir.exists()) {
-            fileSaveDir.mkdir();
-        }
-        Part part;
-        String fileName;
-        String mimeType;
-        String ext;
-            part = request.getPart("img");
-            fileName = part.getSubmittedFileName();
-            mimeType = getServletContext().getMimeType(fileName);
+            File fileSaveDir = new File(Const.SAVE_DIR);
+            if (!fileSaveDir.exists()) {
+                fileSaveDir.mkdir();
+            }
+            String ext;
+            Part part = request.getPart("img");
+            String fileName = part.getSubmittedFileName();
+            String mimeType = getServletContext().getMimeType(fileName);
             if (mimeType == null && savedImage == null) {
                 messages.put("img", "Valasszon egy kepet");
             } else if (mimeType != null && mimeType.startsWith("image/")) {
@@ -119,7 +138,10 @@ public class ProductRegServlet extends HttpServlet {
                 imageServ.create(newImage);
             } else if (mimeType != null && !mimeType.startsWith("image/")) {
                 messages.put("img", "Nem megfelelő formátumú a feltölteni kívánt kép.");
-            }        
+            }
+        } else {
+            messages.put("img", "Kerem elobb adja meg a termekadatokat!");
+        }
         if (!messages.isEmpty()) {
             request.setAttribute("userinput", newProduct);
             request.setAttribute("messages", messages);

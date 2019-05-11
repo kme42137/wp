@@ -53,20 +53,23 @@ public class MerchantSearhServlet extends HttpServlet {
             throws ServletException, IOException {
         long pTownId = Long.parseLong(request.getParameter("townid"));
         String qString = request.getParameter("qstring");
-        MerchantServiceImpl merchantServ = new MerchantServiceImpl();
-        List<Merchant> rsList = merchantServ.search(pTownId, qString);
-        if (rsList != null) {
-            ImageServiceImpl imageServ = new ImageServiceImpl();
-            Map<Long, String> images = new HashMap<>();
-            for (Merchant merchant : rsList) {
-                images.put(merchant.getId(), imageServ.getByTypeForMerhant(merchant.getId(), ImageType.MERCHANT_BIG).getLocation());
-            }
-            request.setAttribute("rslist", rsList);
-            request.setAttribute("images", images);
+        if (qString.isEmpty() && pTownId == 0) {
+            request.setAttribute("message", "Kérem adjon meg legalább egy kereséséi feltételt!");
         } else {
-            request.setAttribute("message", "Sajnos nincs eredménye a keresésnek.");
+            MerchantServiceImpl merchantServ = new MerchantServiceImpl();
+            List<Merchant> rsList = merchantServ.search(pTownId, qString);
+            if (!rsList.isEmpty()) {
+                ImageServiceImpl imageServ = new ImageServiceImpl();
+                Map<Long, String> images = new HashMap<>();
+                for (Merchant merchant : rsList) {
+                    images.put(merchant.getId(), imageServ.getByTypeForMerhant(merchant.getId(), ImageType.MERCHANT_BIG).getLocation());
+                }
+                request.setAttribute("rslist", rsList);
+                request.setAttribute("images", images);
+            } else {
+                request.setAttribute("message", "Sajnos nincs eredménye a keresésnek.");
+            }
         }
-
         doGet(request, response);
     }
 

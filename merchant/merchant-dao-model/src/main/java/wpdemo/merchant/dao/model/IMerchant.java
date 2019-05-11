@@ -23,7 +23,7 @@ public interface IMerchant {
     
     public List<Merchant> getByNameToDisplay(String nameToDisplay);
     
-    public List<Merchant> getByTown(Town pTown); 
+    public List<Merchant> getByTown(long pTownId); 
     
     public List<Merchant> search(long pTownId, String pString);
     

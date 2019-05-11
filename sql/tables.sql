@@ -38,7 +38,7 @@ CREATE TABLE `towns_of_merchant` (
 
 CREATE TABLE `image` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `img_type` int(1) NOT NULL,
+  `img_type` tinyint(3) NOT NULL,
   `contact_id` bigint(20) NOT NULL,
   `location` varchar(200) NOT NULL,
   PRIMARY KEY (`id`),

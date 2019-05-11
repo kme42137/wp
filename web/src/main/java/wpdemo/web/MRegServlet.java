@@ -75,10 +75,12 @@ public class MRegServlet extends HttpServlet {
         }
         newMerchant.setTownIds(townList);
         try {
-            Visitor actVisitor = (Visitor) request.getSession().getAttribute("user");
-            Merchant actMerchant = merchantServ.getByVisitor(actVisitor.getVisitorId());
+            //Visitor actVisitor = (Visitor) request.getSession().getAttribute("user");
+           // Merchant actMerchant = merchantServ.getByVisitor(actVisitor.getVisitorId());
+           Merchant actMerchant = (Merchant) request.getSession().getAttribute("merchant");
             if (actMerchant == null) {
-                merchantServ.create(newMerchant);
+                newMerchant=merchantServ.create(newMerchant);                        
+                request.getSession().setAttribute("merchant", newMerchant);
             } else {
                 merchantServ.modify(actMerchant.getId(), newMerchant);
             }

@@ -6,6 +6,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import wpdemo.merchant.dao.model.Merchant;
+import wpdemo.merchant.service.object.MerchantServiceImpl;
 import wpdemo.support.utill.WPException;
 import wpdemo.visitor.dao.model.Visitor;
 import wpdemo.visitor.service.object.VisitorServiceImpl;
@@ -55,6 +57,9 @@ public class LoginServlet extends HttpServlet {
             Visitor temp = visitorServ.login(request.getParameter("username"), request.getParameter("password"));
             if (temp != null) {
                 request.getSession().setAttribute("user", temp);
+                MerchantServiceImpl merhantServ = new MerchantServiceImpl();
+                Merchant actMechant = merhantServ.getByVisitor(temp.getVisitorId());
+                request.getSession().setAttribute("merchant", actMechant);
                 loginOK = true;
             }
         } catch (WPException e) {

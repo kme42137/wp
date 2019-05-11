@@ -16,4 +16,19 @@ public class ConnectionUtil {
         Class.forName("com.mysql.jdbc.Driver");
         return DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
     }
+    
+    public static String serchString(String str){
+        if(str.isEmpty()){
+            return str;
+        }
+        String[] splStr = str.trim().split("\\s+");
+        StringBuilder strBuilder = new StringBuilder();
+        for (String s : splStr) {
+            strBuilder.append(s);
+            strBuilder.append(" <");
+            strBuilder.append(s);
+            strBuilder.append("* ");
+        }
+        return strBuilder.toString();
+    }
 }

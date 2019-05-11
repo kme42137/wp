@@ -1,6 +1,8 @@
 package wpdemo.product.service.object;
 
 import java.util.List;
+import wpdemo.image.dao.model.Image;
+import wpdemo.image.service.object.ImageServiceImpl;
 import wpdemo.product.dao.jdbc.ProductDaoImpl;
 import wpdemo.product.dao.model.IProduct;
 import wpdemo.product.dao.model.Product;
@@ -36,6 +38,9 @@ public class ProductServiceImpl {
     }
 
     public boolean delete(long pProductId){
+        ImageServiceImpl imageServ= new ImageServiceImpl();
+        Image img = imageServ.getForProduct(pProductId);
+        imageServ.delete(img);
         return dao.delete(pProductId);
     }
 
@@ -51,8 +56,8 @@ public class ProductServiceImpl {
         return dao.getByType(pType);
     }
 
-    public List<Product> search(ProductType pType, String pString){
-        return dao.search(pType, pString);
+    public List<Product> search(ProductType pType, long pTownId, String pString){
+        return dao.search(pType, pTownId, pString);
     }
 
 }

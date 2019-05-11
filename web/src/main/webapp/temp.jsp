@@ -7,9 +7,12 @@
         <title>Bejelentkezés</title>
          <link rel="stylesheet" href="css/hihihaha.css">
     </head>
-    <body>
+    <body class="body-bg">
         <jsp:include page="menu.jsp"></jsp:include>
-            <div class="col-md-6 offset-md-3 top">
+            <div class="container">
+  <div class="card border-0 shadow my-5">
+    <div class="card-body bg-light p-5">
+      <div class="col-md-6 offset-md-3">
                 <form action="login" method="post">                        
                     <div class="form-group row">
                         <label>Felhasználónév vagy e-mail cím</label>
@@ -26,5 +29,8 @@
                 <a href="<c:url value="reg"><c:param name="ismerchant" value="${ismerchant}"/></c:url>"><input type="submit" value="Regisztracio" class="btn btn-success"></a>               
             </div>
         </div>
+    </div>
+  </div>
+</div>
     </body>
 </html>

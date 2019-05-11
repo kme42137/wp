@@ -5,15 +5,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Keresés az eladók között</title>
+        <title>Kereskedő keresés</title>        
+        <link rel="stylesheet" href="css/hihihaha.css">
     </head>
     <body>
         <jsp:include page="menu.jsp"></jsp:include>            
-            <div class="container">
+            <div class="container top">
                 <form action="msearch" method="post">                                                             
                     <div class="form-group"> 
                         <div class="row">
-                            <div class="col">
+                            <div class="col-md-5">
                                 <select class="form-control" name="townid">
                                     <option value="0" selected> -- város választás -- </option>
                                 <c:forEach items="${townList}" var="town">                                                                
@@ -21,24 +22,31 @@
                                 </c:forEach>                                
                             </select>
                         </div>
-                        <div class="col">  
+                        <div class="col-md-5">  
                             <input name="qstring" class="form-control" placeholder="Keresett szöveg...">
                         </div>
-                        <div class="col"><input type="submit" value="Keresés" class="btn btn-light"></div>
+                        <div class="col-md-2"><input type="submit" value="Keresés" class="btn btn-light"></div>
                     </div>
                 </div>                                   
             </form>
             <c:choose>            
                 <c:when test="${not empty rslist}">
                     <h3>Találati lista:</h3>
+                    <br>
                     <c:forEach items="${rslist}" var="merchant">
                         <div class="row">
-                            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
+                            <div class="col-md-7">
                                 <a href="<c:url value="getmerchant"><c:param name="merchantid" value="${merchant.id}"/></c:url>"><h4>${merchant.nameToDisplay}</h4></a>
-                                <p>${merchant.introduction}</p>    
+                                    <br>
+                                    <p>${merchant.introduction}</p>    
                             </div>
-                            <div class="col-xs-6 col-sm-9 col-md-9 col-lg-10 title">
-                                <img class="layout-iamge" src="<c:out value="${images[merchant.id]}"/>" alt="">
+                            <div class="col-md-5">
+                                <img class="img-fluid" src="<c:out value="${images[merchant.id]}"/>" alt="">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <hr>
                             </div>
                         </div>
                     </c:forEach>            

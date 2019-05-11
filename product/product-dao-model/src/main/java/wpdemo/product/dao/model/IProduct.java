@@ -19,5 +19,5 @@ public interface IProduct {
     
     public List<Product> getByType(ProductType pType);
     
-    public List<Product> search(ProductType pType, String pString);
+    public List<Product> search(ProductType pType, long pTownId, String pString);
 }
