@@ -2,7 +2,6 @@ package wpdemo.web;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -146,6 +145,7 @@ public class ProductRegServlet extends HttpServlet {
             request.setAttribute("userinput", newProduct);
             request.setAttribute("messages", messages);            
         } 
+            request.setAttribute("productid", "");
              doGet(request, response);
         
     }

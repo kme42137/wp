@@ -151,43 +151,28 @@ public class ProductDaoImpl implements IProduct {
             return null;
         }
         pString = ConnectionUtil.serchString(pString);
-        try {
-            PreparedStatement ps;
-            if (pTownId == 0) {
-                if (pType.getId() == 0) {
-                    ps = con.prepareStatement("SELECT id, name, merchant_id, product_type, description FROM product WHERE MATCH(name, description) AGAINST(? IN BOOLEAN MODE )");
-                    ps.setString(1, pString);
-                } else if (pString.isEmpty()) {
-                    ps = con.prepareStatement("SELECT id, name, merchant_id, product_type, description FROM product WHERE product_type=?");
-                    ps.setLong(1, pType.getId());                    
-                } else {
-                    ps = con.prepareStatement("SELECT id, name, merchant_id, product_type, description FROM product WHERE MATCH(name, description) AGAINST(? IN BOOLEAN MODE ) AND product_type=?");
-                    ps.setString(1, pString);
-                    ps.setLong(1, pType.getId());
+        StringBuilder stb = new StringBuilder();
+            if(pTownId==0){
+                stb.append("SELECT id, name, merchant_id, product_type, description FROM product WHERE ");
+                if(pString.isEmpty()){
+                    stb.append("product_type=").append(pType.getId());
+                }else if(pType==ProductType.NONE){                    
+                    stb.append("MATCH(name, description) AGAINST('").append(pString).append("' IN BOOLEAN MODE )");
+                }else{
+                    stb.append("MATCH(name, description) AGAINST('").append(pString).append("' IN BOOLEAN MODE ) AND product_type=").append(pType.getId());;
                 }
-            } else {
-                if (pType == ProductType.NONE) {
-                    ps = con.prepareStatement("SELECT DISTINCT product.id, product.name, product.merchant_id, product.product_type, product.description "
-                            + "FROM product INNER JOIN towns_of_merchant ON product.merchant_id=towns_of_merchant.merchant_id WHERE towns_of_merchant.town_id=? "
-                            + "AND MATCH(product.name, product.description) AGAINST(? IN BOOLEAN MODE )");
-                    ps.setLong(1, pTownId);
-                    ps.setString(2, pString);
-                } else if (pString.isEmpty()) {
-                     ps = con.prepareStatement("SELECT DISTINCT product.id, product.name, product.merchant_id, product.product_type, product.description "
-                            + "FROM product INNER JOIN towns_of_merchant ON product.merchant_id=towns_of_merchant.merchant_id WHERE towns_of_merchant.town_id=? "
-                            + " AND product.product_type=?");
-                     ps.setLong(1, pTownId);
-                     ps.setInt(2, pType.getId());
-                } else {
-                     ps = con.prepareStatement("SELECT DISTINCT product.id, product.name, product.merchant_id, product.product_type, product.description "
-                            + "FROM product INNER JOIN towns_of_merchant ON product.merchant_id=towns_of_merchant.merchant_id WHERE towns_of_merchant.town_id=? "
-                            + "AND MATCH(product.name, product.description) AGAINST(? IN BOOLEAN MODE ) AND product.product_type=?");
-                    ps.setLong(1, pTownId);
-                    ps.setString(2, pString);
-                    ps.setInt(3, pType.getId());
+            }else{
+                stb.append("SELECT DISTINCT product.id, product.name, product.merchant_id, product.product_type, product.description FROM product INNER JOIN towns_of_merchant ON product.merchant_id=towns_of_merchant.merchant_id WHERE towns_of_merchant.town_id=").append(pTownId);
+                if(pType!=ProductType.NONE){
+                    stb.append(" AND product.product_type=").append(pType.getId());
+                }
+                if(!pString.isEmpty()){
+                    stb.append(" AND MATCH(product.name, product.description) AGAINST('").append(pString).append("' IN BOOLEAN MODE )");
                 }
             }
-            ResultSet rs = ps.executeQuery();
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(stb.toString());
             while (rs.next()) {
                 Product rsProduct = new Product();
                 rsProduct.setId(rs.getLong(1));
