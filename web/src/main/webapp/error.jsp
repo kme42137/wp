@@ -8,7 +8,7 @@
      <body>
          <jsp:include page="menu.jsp"></jsp:include> 
          <br>
-        <div class="alert alert-danger" role="alert">
+        <div class="alert alert-danger top" role="alert">
             <h1 class="text-center">${message}</h1>
         </div>        
     </body>

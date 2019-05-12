@@ -108,7 +108,7 @@ public class ModRegServlet extends HttpServlet {
             request.setAttribute("messages", messages);
             doGet(request, response);
         } else {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("index.jsp");
         }
     }
 

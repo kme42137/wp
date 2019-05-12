@@ -6,11 +6,24 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Kereskedő keresés</title>        
-        <link rel="stylesheet" href="css/hihihaha.css">
+        <style>
+            body { 
+                background: url("images/search_img.jpg") no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+        </style>
     </head>
     <body>
         <jsp:include page="menu.jsp"></jsp:include>            
-            <div class="container top">
+            <div class="container top font-weight-light ">
+                <div class="card border-0 shadow my-5">
+                    <div class="card-body pt-3 pl-5 pr-5 pb-4 bg-light">
+                        <div class="row pb-2 pl-4">
+                    <h5>Keresés a kereskedők között</h5>
+                    </div>
                 <form action="msearch" method="post">                                                             
                     <div class="form-group"> 
                         <div class="row">
@@ -22,26 +35,27 @@
                                 </c:forEach>                                
                             </select>
                         </div>
-                        <div class="col-md-5">  
+                        <div class="col-md-6">  
                             <input name="qstring" class="form-control" placeholder="Keresett szöveg...">
                         </div>
-                        <div class="col-md-2"><input type="submit" value="Keresés" class="btn btn-light"></div>
+                        <div class="col-md-1"><input type="submit" value="Keresés" class="btn  btn-outline-success"></div>
                     </div>
                 </div>                                   
-            </form>
+            </form>                        
             <c:choose>            
                 <c:when test="${not empty rslist}">
-                    <h3>Találati lista:</h3>
-                    <br>
+                    <div class="row p-4">
+                    <h5>Találati lista:</h5>
+                    </div>
                     <c:forEach items="${rslist}" var="merchant">
                         <div class="row">
-                            <div class="col-md-7">
-                                <a href="<c:url value="getmerchant"><c:param name="merchantid" value="${merchant.id}"/></c:url>"><h4>${merchant.nameToDisplay}</h4></a>
+                            <div class="col-md-7 p-5">
+                                <a href="<c:url value="getmerchant"><c:param name="merchantid" value="${merchant.id}"/></c:url>"><h5>${merchant.nameToDisplay}</h5></a>
                                     <br>
-                                    <p>${merchant.introduction}</p>    
+                                    <p class="text-justify">${merchant.introduction}</p>    
                             </div>
                             <div class="col-md-5">
-                                <img class="img-fluid" src="<c:out value="${images[merchant.id]}"/>" alt="">
+                                <img class="img-fluid rounded" src="<c:out value="${images[merchant.id]}"/>" alt="">
                             </div>
                         </div>
                         <div class="row">
@@ -56,5 +70,8 @@
                 </c:otherwise>
             </c:choose>
         </div>
+                    </div>
+                </div>
+          
     </body>
 </html>

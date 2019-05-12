@@ -144,11 +144,10 @@ public class ProductRegServlet extends HttpServlet {
         }
         if (!messages.isEmpty()) {
             request.setAttribute("userinput", newProduct);
-            request.setAttribute("messages", messages);
-            doGet(request, response);
-        } else {
-            response.sendRedirect("preg");
-        }
+            request.setAttribute("messages", messages);            
+        } 
+             doGet(request, response);
+        
     }
 
     /**

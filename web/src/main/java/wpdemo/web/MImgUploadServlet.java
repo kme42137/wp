@@ -101,6 +101,7 @@ public class MImgUploadServlet extends HttpServlet {
         } else {
             request.setAttribute("merchantid", actMerchant.getId());
             //getServletContext().getRequestDispatcher("/getmerchant").forward(request, response);
+            response.setContentType("text/html;charset=UTF-8");
             response.sendRedirect("getmerchant?merchantid=" + actMerchant.getId());
         }
 

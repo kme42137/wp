@@ -8,11 +8,11 @@
         <style>
             header {	
                 background-color: #444;
-                background: url("images/buzamezo.jpg") no-repeat center top;
+                background: url("images/index_img2.jpg") no-repeat center top;
                 padding-top: 150px;
                 background-attachment: relative;
                 background-position: center center;
-                min-height: 650px;
+                height: 600px;
                 width: 100%;
 
                 -webkit-background-size: 100%;
@@ -40,11 +40,11 @@
         <jsp:include page="menu.jsp"></jsp:include>
 
         <header>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <h1 class="font-weight-light">Web Piac</h1>
-                        <h2 class="lead">Ha tudni szeretned, mit kapni a kornyeken</h2>
+            <div class="container p-5">
+                <div class="row pt-5">
+                    <div class="col-md-12 text-right pt-5">
+                        <h1>Ha tudni szeretnéd, mit kapni a kornyéken vagy el szeretnéd adni a portékádat, akkor jó helyen jársz.</h1>
+                        <h2 class="lead pt-5">A honlap jelenleg fejlesztés alatt áll, így csak a félkész állapot tekinthető meg.</h2>
                     </div>
                 </div>
             </div>

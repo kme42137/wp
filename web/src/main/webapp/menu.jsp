@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="css/hihihaha.css">
 </head>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top mb-5 shadow fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top mb-8 shadow fixed-top">
     <div class="container">
         <span class="navbar-brand"><a href="index.jsp">Web Piac</a></span>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,8 +19,8 @@
                         Keresés
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="psearch">Termékek</a>
-                        <a class="dropdown-item" href="msearch">Eladók</a>                                                      
+                        <a class="dropdown-item" href="psearch">Termék</a>
+                        <a class="dropdown-item" href="msearch">Eldó</a>                                                      
                     </div>
                 </li>
                 <c:choose>
