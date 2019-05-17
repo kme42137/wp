@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel='stylesheet' href='/webjars/bootstrap/4.1.3/css/bootstrap.min.css'>  
-  <link rel="stylesheet" href="css/hihihaha.css">
+    <link rel="stylesheet" href="css/hihihaha.css">
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top mb-8 shadow fixed-top">
@@ -47,6 +47,22 @@
                             </li>            
                     </c:when>
                     <c:otherwise>    
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Bevásárlólista
+                            </a>
+                            <c:if test="${sessionScope.cart!=null}">
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">     
+                                    <c:forEach items="${sessionScope.cart}" var="pr">                                            
+                                        <a class="dropdown-item" href="<c:url value="getmerchant"><c:param name="merchantid" value="${pr.value}"/></c:url>">${pr.key}</a>
+                                    </c:forEach> 
+
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="cartdel">Lista törlése</a>
+
+                                </div>
+                            </c:if>
+                        </li>
                         <c:choose>
                             <c:when test="${sessionScope.user.isMerchant}">
                                 <li class="nav-item dropdown">

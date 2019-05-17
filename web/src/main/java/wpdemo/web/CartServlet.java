@@ -1,19 +1,21 @@
 package wpdemo.web;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Kovacs Maria
  */
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
-public class LogoutServlet extends HttpServlet {
+@WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
+public class CartServlet extends HttpServlet {
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -27,11 +29,18 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Map<String, Long> cart = (Map<String, Long>)request.getSession().getAttribute("cart");
+        if(cart==null){
+            cart = new HashMap<>();            
+        }
+        cart.put(request.getParameter("cartname"), Long.parseLong(request.getParameter("cartvalue")));
+        request.getSession().setAttribute("cart", cart);
+        request.setAttribute("townList", request.getSession().getAttribute("townList"));
+        request.setAttribute("types", request.getSession().getAttribute("types"));
+        request.setAttribute("rslist", request.getSession().getAttribute("prslist"));
+        request.setAttribute("images", request.getSession().getAttribute("pimages"));        
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        session.invalidate();
-        request.getRequestDispatcher("index.jsp").include(request, response);
-
+        getServletContext().getRequestDispatcher("/psearch.jsp").include(request, response);        
     }
 
     /**
@@ -45,7 +54,7 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
     }
 
     /**

@@ -1,6 +1,5 @@
 package wpdemo.visitor.dao.jdbc;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,17 +13,7 @@ import wpdemo.visitor.dao.model.Visitor;
 /**
  * @author Kovacs Maria
  */
-public class VisitorDaoImpl implements IVisitorDao {
-
-    private Connection con;
-
-    public VisitorDaoImpl() {
-        try {
-            con = ConnectionUtil.getConnection();
-        } catch (Exception e) {
-            System.exit(100);
-        }
-    }
+public class VisitorDaoImpl extends ConnectionUtil implements IVisitorDao {   
 
     @Override
     public Visitor create(Visitor pVisitor) {
@@ -51,14 +40,14 @@ public class VisitorDaoImpl implements IVisitorDao {
     @Override
     public Visitor modify(long pOldVisitorId, Visitor pVisitor) {
         try {
-            PreparedStatement ps = con.prepareStatement("UPDATE visitor SET nickname=?,firstName=?, lastName=?, eMail=?, password=?,isMerchant=? WHERE id=?");
+            PreparedStatement ps = con.prepareStatement("UPDATE visitor SET nickname=?, firstName=?, lastName=?, eMail=?, password=?, isMerchant=? WHERE id=?");
             ps.setString(1, pVisitor.getNickname());
             ps.setString(2, pVisitor.getFirstname());
             ps.setString(3, pVisitor.getLastName());
             ps.setString(4, pVisitor.geteMail());
             ps.setString(5, pVisitor.getPassword());
             ps.setBoolean(6, pVisitor.isIsMerchant());
-            ps.setLong(6, pOldVisitorId);
+            ps.setLong(7, pOldVisitorId);
             ps.executeUpdate();
             pVisitor.setVisitorId(pOldVisitorId); // Ez kell???
             return pVisitor;

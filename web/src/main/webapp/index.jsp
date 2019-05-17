@@ -1,4 +1,5 @@
 
+<%@page import="wpdemo.visitor.dao.model.Visitor"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -43,12 +44,11 @@
             <div class="container p-5">
                 <div class="row pt-5">
                     <div class="col-md-12 text-right pt-5">
-                        <h1>Ha tudni szeretnéd, mit kapni a kornyéken vagy el szeretnéd adni a portékádat, akkor jó helyen jársz.</h1>
+                        <h1>Ha tudni szeretnéd, mit kapni a kornyéken vagy eladnád a portékádat, akkor jó helyen jársz.</h1>
                         <h2 class="lead pt-5">A honlap jelenleg fejlesztés alatt áll, így csak a félkész állapot tekinthető meg.</h2>
                     </div>
                 </div>
             </div>
-        </header>
-
+        </header>                
     </body>
 </html>

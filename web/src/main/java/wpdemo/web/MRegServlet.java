@@ -37,9 +37,7 @@ public class MRegServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         TownServiceImpl townServ = new TownServiceImpl();
         request.setAttribute("townList", townServ.getAll());
-        Visitor actVisitor = (Visitor) request.getSession().getAttribute("user");
-        MerchantServiceImpl merchantServ = new MerchantServiceImpl();
-        Merchant actMerchant = merchantServ.getByVisitor(actVisitor.getVisitorId());
+        Merchant actMerchant = (Merchant) request.getSession().getAttribute("merchant");
         if (request.getAttribute("userinput") == null) {
             request.setAttribute("userinput", actMerchant);
         }
@@ -57,17 +55,14 @@ public class MRegServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Merchant newMerchant = new Merchant();
-        TownServiceImpl townServ = new TownServiceImpl();
+        Merchant newMerchant = new Merchant();        
         MerchantServiceImpl merchantServ = new MerchantServiceImpl();
         Map<String, String> messages = new HashMap<>();
-        boolean inputOk = false;
         newMerchant.setVisitorId(((Visitor) request.getSession().getAttribute("user")).getVisitorId());
         newMerchant.setNameToDisplay(request.getParameter("pnametodisplay"));
         newMerchant.setIntroduction(request.getParameter("pintroduction"));
         newMerchant.setDescription(request.getParameter("pdescription"));
         List<Long> townList = new ArrayList<>();
-        long temp;
         for (int i = 1; i < 5; i++) {
             if (request.getParameter("town" + i) != null) {
                 townList.add(Long.parseLong(request.getParameter("town" + i)));
@@ -75,16 +70,13 @@ public class MRegServlet extends HttpServlet {
         }
         newMerchant.setTownIds(townList);
         try {
-            //Visitor actVisitor = (Visitor) request.getSession().getAttribute("user");
-           // Merchant actMerchant = merchantServ.getByVisitor(actVisitor.getVisitorId());
-           Merchant actMerchant = (Merchant) request.getSession().getAttribute("merchant");
+            Merchant actMerchant = (Merchant) request.getSession().getAttribute("merchant");
             if (actMerchant == null) {
-                newMerchant=merchantServ.create(newMerchant);                        
+                newMerchant = merchantServ.create(newMerchant);
                 request.getSession().setAttribute("merchant", newMerchant);
             } else {
                 merchantServ.modify(actMerchant.getId(), newMerchant);
             }
-            inputOk = true;
         } catch (WPException e) {
             if (newMerchant.getNameToDisplay() == null || newMerchant.getNameToDisplay().isEmpty()) {
                 messages.put("pnametodisplay", e.getMessage());
@@ -99,7 +91,7 @@ public class MRegServlet extends HttpServlet {
                 messages.put("town", e.getMessage());
             }
         }
-        if (!inputOk) {
+        if (!messages.isEmpty()) {
             request.setAttribute("userinput", newMerchant);
             request.setAttribute("messages", messages);
             doGet(request, response);

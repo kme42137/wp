@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import wpdemo.support.utill.Const;
 
 /**
  * The File servlet for serving from absolute path.
@@ -21,13 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "GetImgServlet", urlPatterns = {"/img/*"})
 public class GetImgServlet extends HttpServlet {
     
-    private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.
-    private String filePath;
-    
-    @Override
-    public void init() throws ServletException {      
-        this.filePath = "D:\\Java_probalkozasok\\szemet\\wp\\mimages";        
-    }
+    private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.        
 
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -52,7 +47,7 @@ public class GetImgServlet extends HttpServlet {
         }
 
         // Decode the file name (might contain spaces and on) and prepare file object.
-        File file = new File(filePath, URLDecoder.decode(requestedFile, "UTF-8"));
+        File file = new File(Const.SAVE_DIR, URLDecoder.decode(requestedFile, "UTF-8"));
 
         // Check if file actually exists in filesystem.
         if (!file.exists()) {
@@ -88,8 +83,7 @@ public class GetImgServlet extends HttpServlet {
             while ((length = input.read(buffer)) > 0) {
                 output.write(buffer, 0, length);
             }
-        } finally {
-            // Gently close streams.
+        } finally {            
             close(output);
             close(input);
         }    

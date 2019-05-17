@@ -2,7 +2,9 @@ package wpdemo.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import wpdemo.image.service.object.ImageServiceImpl;
 import wpdemo.merchant.dao.model.Merchant;
 import wpdemo.merchant.service.object.MerchantServiceImpl;
+import wpdemo.product.dao.model.Product;
+import wpdemo.product.service.object.ProductServiceImpl;
 import wpdemo.town.dao.model.Town;
 import wpdemo.town.service.object.TownServiceImpl;
 import wpdemo.visitor.service.object.VisitorServiceImpl;
@@ -49,6 +53,16 @@ public class GetMerchantServlet extends HttpServlet {
         }
         request.setAttribute("towns", actTowns);
         request.setAttribute("email", visitorServ.get(actMerchant.getVisitorId()).geteMail());
+        ProductServiceImpl productServ = new ProductServiceImpl();
+        List<Product> prList = productServ.getByMerchant(actMerchant.getId());
+        if(!prList.isEmpty()){                
+                Map<Long, String> prImages = new HashMap<>();
+                for (Product product : prList) {
+                    prImages.put(product.getId(), imageServ.getForProduct(product.getId()).getLocation());
+                }
+                request.setAttribute("products", prList);
+                request.setAttribute("primages", prImages);
+        }        
         getServletContext().getRequestDispatcher("/merchant.jsp").include(request, response);
     }
 

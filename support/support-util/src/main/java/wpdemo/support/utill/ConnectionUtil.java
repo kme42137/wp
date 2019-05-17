@@ -2,33 +2,33 @@ package wpdemo.support.utill;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
 /**
  * @author Kovacs Maria
  */
 public class ConnectionUtil {
-    private static final String USERNAME = "admin";
-    private static final String PASSWORD = "admin";
-    private static final String CONN_STRING = "jdbc:mysql://localhost/wpdemo?useSSL=false";
+            
+    protected Connection con;
 
-    public static Connection getConnection() throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.jdbc.Driver");
-        return DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
+    public ConnectionUtil() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");            
+            con = DriverManager.getConnection(Const.MYSQL_CONN_STRING, Const.MYSQL_USERNAME, Const.MYSQL_PASSWORD);
+        } catch (Exception e) {
+            System.exit(100);
+        }
     }
+    
     
     public static String serchString(String str){
         if(str.isEmpty()){
             return str;
         }
         String[] splStr = str.trim().split("\\s+");
-        StringBuilder strBuilder = new StringBuilder();
+        String schString="";        
         for (String s : splStr) {
-            strBuilder.append(s);
-            strBuilder.append(" <");
-            strBuilder.append(s);
-            strBuilder.append("* ");
+            schString+=s+" <"+s+"* ";            
         }
-        return strBuilder.toString();
+        return schString;
     }
 }

@@ -1,6 +1,5 @@
 package wpdemo.image.dao.jdbc;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,18 +16,13 @@ import wpdemo.support.utill.ConnectionUtil;
 /**
  * @author Kovacs Maria
  */
-public class ImageDaoImpl implements IImage {
+public class ImageDaoImpl extends ConnectionUtil implements IImage {
 
-    private Connection con;
     private PImageDao imgDao;
 
     public ImageDaoImpl() {
-        try {
-            con = ConnectionUtil.getConnection();
-            imgDao = new PImageDao();
-        } catch (Exception e) {
-            System.exit(100);
-        }
+       super();
+       imgDao = new PImageDao(con);        
     }
 
     @Override

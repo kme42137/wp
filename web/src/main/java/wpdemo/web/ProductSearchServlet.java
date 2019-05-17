@@ -1,7 +1,6 @@
 package wpdemo.web;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +13,7 @@ import wpdemo.image.service.object.ImageServiceImpl;
 import wpdemo.product.dao.model.Product;
 import wpdemo.product.dao.model.ProductType;
 import wpdemo.product.service.object.ProductServiceImpl;
+import wpdemo.town.dao.model.Town;
 import wpdemo.town.service.object.TownServiceImpl;
 
 /**
@@ -40,8 +40,11 @@ public class ProductSearchServlet extends HttpServlet {
             types.put(ProductType.values()[i].getId(), ProductType.values()[i].getMsg());
         }        
         request.setAttribute("types", types);
+        request.getSession().setAttribute("types", types);
         TownServiceImpl townServ = new TownServiceImpl();
-        request.setAttribute("townList", townServ.getAll());
+        List<Town> lsTown = townServ.getAll();
+        request.setAttribute("townList", lsTown);
+        request.getSession().setAttribute("townList", lsTown);
         getServletContext().getRequestDispatcher("/psearch.jsp").include(request, response);
 
     }
@@ -71,6 +74,8 @@ public class ProductSearchServlet extends HttpServlet {
                 for (Product product : rsList) {
                     images.put(product.getId(), imageServ.getForProduct(product.getId()).getLocation());
                 }
+                request.getSession().setAttribute("prslist", rsList);
+                request.getSession().setAttribute("pimages", images);
                 request.setAttribute("rslist", rsList);
                 request.setAttribute("images", images);
             } else {

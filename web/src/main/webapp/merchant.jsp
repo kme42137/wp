@@ -75,8 +75,28 @@
                 </div>
                 <div class="row py-5">
                 </div>                                          
-            </div>
-
+                        <c:if test="${not empty products}">                                   
+                            <div class="row p-4">
+                    <h5>Kinalatom:</h5>
+                    </div>
+                            <c:forEach items="${products}" var="product">
+                                <div class="row">
+                                    <div class="col-md-7 p-5">
+                                        <h5>${product.name}</h5>                                                                                        
+                                            <p class="text-justify py-5">${product.description}</p>                                                
+                                    </div>
+                                    <div class="col-md-5">
+                                        <img class="img-fluid rounded" src="<c:out value="${primages[product.id]}"/>" alt="">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <hr>
+                                    </div>
+                                </div>
+                            </c:forEach>                                    
+                        </c:if>                    
+                </div>
         </main>
     </body>
 </html>

@@ -48,8 +48,7 @@ public class RegServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Visitor newVisitor = new Visitor();
-        Map<String, String> messages = new HashMap<>();
-        boolean inputOk = false;
+        Map<String, String> messages = new HashMap<>();        
         newVisitor.setNickname(request.getParameter("pnickname"));
         newVisitor.setLastName(request.getParameter("plastname"));
         newVisitor.setFirstname(request.getParameter("pfirstname"));
@@ -62,8 +61,7 @@ public class RegServlet extends HttpServlet {
         newVisitor.setIsMerchant(Boolean.valueOf(request.getParameter("ismerchant")));
         VisitorServiceImpl visitorServ = new VisitorServiceImpl();
         try {
-            visitorServ.create(newVisitor);
-            inputOk = true;
+            visitorServ.create(newVisitor);            
         } catch (WPException e) {
             switch (e.errCode) {
                 case 0:
@@ -101,7 +99,7 @@ public class RegServlet extends HttpServlet {
                     break;
             }
         }
-        if (!inputOk) {
+        if (!messages.isEmpty()) {
             request.setAttribute("userinput", newVisitor);
             request.setAttribute("messages", messages);
             doGet(request, response);

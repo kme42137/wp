@@ -19,7 +19,6 @@ import wpdemo.visitor.service.object.VisitorServiceImpl;
 @WebServlet(name = "ModRegServlet", urlPatterns = {"/modreg"})
 public class ModRegServlet extends HttpServlet {
 
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -31,9 +30,11 @@ public class ModRegServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {        
-        response.setContentType("text/html;charset=UTF-8");
-        request.setAttribute("userinput", request.getSession().getAttribute("user"));
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");        
+        if (request.getAttribute("userinput") == null) {    
+            request.setAttribute("userinput", request.getSession().getAttribute("user"));
+        }
         getServletContext().getRequestDispatcher("/modreg.jsp").include(request, response);
     }
 
@@ -50,9 +51,8 @@ public class ModRegServlet extends HttpServlet {
             throws ServletException, IOException {
         Visitor newVisitor = new Visitor();
         Map<String, String> messages = new HashMap<>();
-        boolean inputOk = false;
-        newVisitor.setVisitorId(((Visitor)request.getSession().getAttribute("user")).getVisitorId());
-        newVisitor.setNickname(((Visitor)request.getSession().getAttribute("user")).getNickname());
+        newVisitor.setVisitorId(((Visitor) request.getSession().getAttribute("user")).getVisitorId());
+        newVisitor.setNickname(((Visitor) request.getSession().getAttribute("user")).getNickname());
         newVisitor.setLastName(request.getParameter("plastname"));
         newVisitor.setFirstname(request.getParameter("pfirstname"));
         newVisitor.seteMail(request.getParameter("pemail"));
@@ -61,11 +61,11 @@ public class ModRegServlet extends HttpServlet {
         } else {
             messages.put("ppassword1", "Nem egyezik a két megadott jelszó.");
         }
-        newVisitor.setIsMerchant(((Visitor)request.getSession().getAttribute("user")).isIsMerchant());
+        newVisitor.setIsMerchant(((Visitor) request.getSession().getAttribute("user")).isIsMerchant());
         VisitorServiceImpl visitorServ = new VisitorServiceImpl();
         try {
             visitorServ.modify(newVisitor.getVisitorId(), newVisitor);
-            inputOk = true;
+            request.getSession().setAttribute("user", newVisitor);
         } catch (WPException e) {
             switch (e.errCode) {
                 case 0:
@@ -103,7 +103,7 @@ public class ModRegServlet extends HttpServlet {
                     break;
             }
         }
-        if (!inputOk) {
+        if (!messages.isEmpty()) {
             request.setAttribute("userinput", newVisitor);
             request.setAttribute("messages", messages);
             doGet(request, response);

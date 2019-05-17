@@ -8,20 +8,15 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import wpdemo.image.dao.model.Image;
-import wpdemo.support.utill.ConnectionUtil;
 
 /**
  * @author Kovacs Maria
  */
 public class PImageDao {
-     private Connection con;
+    private Connection con;
 
-    public PImageDao() {
-        try {
-            con = ConnectionUtil.getConnection();
-        } catch (Exception e) {
-            System.exit(100);
-        }
+    public PImageDao(Connection con) {
+        this.con = con;
     }
 
 

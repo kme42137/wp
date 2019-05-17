@@ -1,6 +1,5 @@
 package wpdemo.merchant.dao.jdbc;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,18 +15,8 @@ import wpdemo.support.utill.ConnectionUtil;
 /**
  * @author Kovacs Maria
  */
-public class MerchantDaoImpl implements IMerchant {
-
-    private Connection con;
-
-    public MerchantDaoImpl() {
-        try {
-            con = ConnectionUtil.getConnection();
-        } catch (Exception e) {
-            System.exit(100);
-        }
-    }
-
+public class MerchantDaoImpl extends ConnectionUtil implements IMerchant {
+    
     @Override
     public Merchant create(Merchant pMerchant) {
         try {

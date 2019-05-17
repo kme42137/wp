@@ -50,17 +50,15 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          boolean loginOK = false;
         String errorMessage="";
         VisitorServiceImpl visitorServ = new VisitorServiceImpl();
         try {
-            Visitor temp = visitorServ.login(request.getParameter("username"), request.getParameter("password"));
-            if (temp != null) {
-                request.getSession().setAttribute("user", temp);
+            Visitor visitor = visitorServ.login(request.getParameter("username"), request.getParameter("password"));
+            if (visitor != null) {
+                request.getSession().setAttribute("user", visitor);
                 MerchantServiceImpl merhantServ = new MerchantServiceImpl();
-                Merchant actMechant = merhantServ.getByVisitor(temp.getVisitorId());
-                request.getSession().setAttribute("merchant", actMechant);
-                loginOK = true;
+                Merchant actMechant = merhantServ.getByVisitor(visitor.getVisitorId());
+                request.getSession().setAttribute("merchant", actMechant);                
             }
         } catch (WPException e) {
             switch (e.errCode) {
@@ -72,7 +70,7 @@ public class LoginServlet extends HttpServlet {
                     break;
             }
         }
-         if (!loginOK) {
+         if (!errorMessage.isEmpty()) {
             request.setAttribute("error", errorMessage);
             doGet(request, response);
         } else {

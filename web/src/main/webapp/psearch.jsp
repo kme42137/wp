@@ -53,14 +53,22 @@
                     <c:choose>            
                         <c:when test="${not empty rslist}">
                             <div class="row p-4">
-                    <h5>Találati lista:</h5>
-                    </div>
+                                <h5>Találati lista:</h5>
+                            </div>
                             <c:forEach items="${rslist}" var="product">
                                 <div class="row">
                                     <div class="col-md-7 p-5">
                                         <h5>${product.name}</h5>                                                                                        
-                                            <p class="text-justify py-5">${product.description}</p>    
-                                            <a href="<c:url value="getmerchant"><c:param name="merchantid" value="${product.merchantId}"/></c:url>"><p>Tovább a termelőhöz</p></a>
+                                        <p class="text-justify py-5">${product.description}</p>    
+                                        <a href="<c:url value="getmerchant"><c:param name="merchantid" value="${product.merchantId}"/></c:url>"><p>Tovább a termelőhöz</p></a>
+                                        <c:if test="${sessionScope.user!=null}">
+                                            <form action="cart" method="get">
+                                                <input type="hidden" value="${product.name}" name="cartname" />
+                                                <input type="hidden" value="${product.merchantId}" name="cartvalue" />
+                                                <input type="submit" value="Listára vele" class="btn btn-outline-success">
+                                            </form>
+                                        </c:if>
+
                                     </div>
                                     <div class="col-md-5">
                                         <img class="img-fluid rounded" src="<c:out value="${images[product.id]}"/>" alt="">

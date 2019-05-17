@@ -1,6 +1,5 @@
 package wpdemo.town.dao.jdbc;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,16 +14,7 @@ import wpdemo.town.dao.model.Town;
 /**
  * @author Kovacs Maria
  */
-public class TownDaoImpl implements ITownDao{
-    private Connection con;
-
-    public TownDaoImpl() {
-         try {
-            con = ConnectionUtil.getConnection();
-        } catch (Exception e) {
-            System.exit(100);
-        }
-    }
+public class TownDaoImpl extends ConnectionUtil implements ITownDao{
 
     @Override
     public Town get(long pTownId) {

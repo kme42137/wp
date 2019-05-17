@@ -15,19 +15,17 @@ import wpdemo.image.dao.model.Image;
 import wpdemo.image.dao.model.ImageType;
 import wpdemo.image.service.object.ImageServiceImpl;
 import wpdemo.merchant.dao.model.Merchant;
-import wpdemo.merchant.service.object.MerchantServiceImpl;
-import wpdemo.visitor.dao.model.Visitor;
+import wpdemo.support.utill.Const;
 
 /**
  * @author Kovacs Maria
  */
 @WebServlet(name = "MImgUploadServlet", urlPatterns = {"/mimgupload"})
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-        maxFileSize = 1024 * 1024 * 10, // 10MB
-        maxRequestSize = 1024 * 1024 * 50)   // 50MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 50)
 public class MImgUploadServlet extends HttpServlet {
-
-    private static final String SAVE_DIR = "D:\\Java_probalkozasok\\szemet\\wp\\mimages";
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -41,10 +39,8 @@ public class MImgUploadServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        Visitor actVisitor = (Visitor) request.getSession().getAttribute("user");
-        MerchantServiceImpl merchantServ = new MerchantServiceImpl();
-        Merchant actMerchant = merchantServ.getByVisitor(actVisitor.getVisitorId());
+        response.setContentType("text/html;charset=UTF-8");        
+        Merchant actMerchant = (Merchant)request.getSession().getAttribute("merchant");
         ImageServiceImpl imageServ = new ImageServiceImpl();
         request.setAttribute("savedimages", imageServ.getForMerchant(actMerchant.getId()));
         getServletContext().getRequestDispatcher("/imgreg.jsp").include(request, response);
@@ -60,15 +56,13 @@ public class MImgUploadServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        Visitor actVisitor = (Visitor) request.getSession().getAttribute("user");
-        MerchantServiceImpl merchantServ = new MerchantServiceImpl();
-        Merchant actMerchant = merchantServ.getByVisitor(actVisitor.getVisitorId());
+            throws ServletException, IOException {        
+        Merchant actMerchant = (Merchant) request.getSession().getAttribute("merchant");
         ImageServiceImpl imageServ = new ImageServiceImpl();
         Map<String, String> messages = new HashMap<>();
         Map<Integer, Image> savedImages = imageServ.getForMerchant(actMerchant.getId());
 
-        File fileSaveDir = new File(SAVE_DIR);
+        File fileSaveDir = new File(Const.SAVE_DIR);
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdir();
         }
@@ -89,7 +83,7 @@ public class MImgUploadServlet extends HttpServlet {
                 newImage.setType(ImageType.values()[i]);
                 fileName = "m_" + actMerchant.getId() + "_" + i + ext;
                 newImage.setLocation("img/" + fileName);
-                part.write(SAVE_DIR + File.separator + fileName);
+                part.write(Const.SAVE_DIR + File.separator + fileName);
                 imageServ.create(newImage);
             } else if (mimeType != null && !mimeType.startsWith("image/")) {
                 messages.put("file" + i, "Nem megfelelő formátumú a feltölteni kívánt kép.");
@@ -99,8 +93,7 @@ public class MImgUploadServlet extends HttpServlet {
             request.setAttribute("messages", messages);
             doGet(request, response);
         } else {
-            request.setAttribute("merchantid", actMerchant.getId());
-            //getServletContext().getRequestDispatcher("/getmerchant").forward(request, response);
+            request.setAttribute("merchantid", actMerchant.getId());            
             response.setContentType("text/html;charset=UTF-8");
             response.sendRedirect("getmerchant?merchantid=" + actMerchant.getId());
         }
