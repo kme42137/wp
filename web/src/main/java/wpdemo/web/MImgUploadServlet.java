@@ -92,10 +92,9 @@ public class MImgUploadServlet extends HttpServlet {
         if (!messages.isEmpty()) {
             request.setAttribute("messages", messages);
             doGet(request, response);
-        } else {
-            request.setAttribute("merchantid", actMerchant.getId());            
+        } else {                      
             response.setContentType("text/html;charset=UTF-8");
-            response.sendRedirect("getmerchant?merchantid=" + actMerchant.getId());
+            response.sendRedirect("getmerchant?merchantid=" + actMerchant.getId());            
         }
 
     }

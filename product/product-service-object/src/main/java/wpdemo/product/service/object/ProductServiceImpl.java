@@ -21,7 +21,8 @@ public class ProductServiceImpl {
         if (dao.get(pProduct.getId()) != null) {
             return null;
         } else if (pProduct.getName() == null || pProduct.getName().isEmpty()
-                || pProduct.getDescription() == null || pProduct.getDescription().isEmpty()) {
+                || pProduct.getDescription() == null || pProduct.getDescription().isEmpty() 
+                || pProduct.getType()==ProductType.NONE) {
             throw new WPException(WPErrors.EMPTY_FIELD);
         } else {
             return dao.create(pProduct);
@@ -30,7 +31,8 @@ public class ProductServiceImpl {
 
     public Product modify(long pOldProductId, Product pProduct){
         if (pProduct.getName() == null || pProduct.getName().isEmpty()
-                || pProduct.getDescription() == null || pProduct.getDescription().isEmpty()) {
+                || pProduct.getDescription() == null || pProduct.getDescription().isEmpty()
+                || pProduct.getType()==ProductType.NONE) {
             throw new WPException(WPErrors.EMPTY_FIELD);
         } else {
             return dao.modify(pOldProductId, pProduct);

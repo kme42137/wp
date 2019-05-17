@@ -55,14 +55,9 @@
                                                     </c:otherwise>                                    
                                                 </c:choose>
                                             </c:forEach>
-                                            <c:choose>
-                                                <c:when test="${van}">
-                                                    <option disabled value> -- válasszon -- </option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option disabled selected value> -- válasszon -- </option>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <c:if test="${!van}">
+                                                <option disabled selected value > -- válasszon -- </option>
+                                            </c:if>   
                                         </select>
                                     </div>
                                     <div class="col">
@@ -79,14 +74,9 @@
                                                     </c:otherwise>                                    
                                                 </c:choose>
                                             </c:forEach>
-                                            <c:choose>
-                                                <c:when test="${van}">
-                                                    <option disabled value> -- válasszon -- </option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option disabled selected value> -- válasszon -- </option>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <c:if test="${!van}">
+                                                <option disabled selected value > -- válasszon -- </option>
+                                            </c:if>    
                                         </select>
                                     </div>
                                 </div>
@@ -105,14 +95,9 @@
                                                     </c:otherwise>                                    
                                                 </c:choose>
                                             </c:forEach>
-                                            <c:choose>
-                                                <c:when test="${van}">
-                                                    <option disabled value> -- válasszon -- </option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option disabled selected value> -- válasszon -- </option>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <c:if test="${!van}">
+                                                <option disabled selected value > -- válasszon -- </option>
+                                            </c:if> 
                                         </select>
                                     </div>
                                     <div class="col">
@@ -129,14 +114,9 @@
                                                     </c:otherwise>                                    
                                                 </c:choose>
                                             </c:forEach>
-                                            <c:choose>
-                                                <c:when test="${van}">
-                                                    <option disabled value> -- válasszon -- </option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option disabled selected value> -- válasszon -- </option>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <c:if test="${!van}">
+                                                <option disabled selected value > -- válasszon -- </option>
+                                            </c:if> 
                                         </select>
                                     </div>
                                 </div>

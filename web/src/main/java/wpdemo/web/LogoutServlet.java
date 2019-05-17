@@ -30,7 +30,7 @@ public class LogoutServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         session.invalidate();
-        request.getRequestDispatcher("index.jsp").include(request, response);
+        response.sendRedirect("index.jsp");
 
     }
 

@@ -63,7 +63,7 @@ public class GetMerchantServlet extends HttpServlet {
                 request.setAttribute("products", prList);
                 request.setAttribute("primages", prImages);
         }        
-        getServletContext().getRequestDispatcher("/merchant.jsp").include(request, response);
+        getServletContext().getRequestDispatcher("/merchant.jsp").forward(request, response);
     }
 
     /**

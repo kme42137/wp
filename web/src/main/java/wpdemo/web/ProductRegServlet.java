@@ -27,9 +27,9 @@ import wpdemo.support.utill.WPException;
  * @author Kovacs Maria
  */
 @WebServlet(name = "ProductRegServlet", urlPatterns = {"/preg"})
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-        maxFileSize = 1024 * 1024 * 10, // 10MB
-        maxRequestSize = 1024 * 1024 * 50)   // 50MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 50)
 
 public class ProductRegServlet extends HttpServlet {
 
@@ -54,8 +54,8 @@ public class ProductRegServlet extends HttpServlet {
             for (int i = 1; i < ProductType.values().length; i++) {
                 types.put(ProductType.values()[i].getId(), ProductType.values()[i].getMsg());
             }
-            ProductServiceImpl productServ = new ProductServiceImpl();
             request.setAttribute("types", types);
+            ProductServiceImpl productServ = new ProductServiceImpl();
             List<Product> prList = productServ.getByMerchant(((Merchant) request.getSession().getAttribute("merchant")).getId());
             if (prList != null) {
                 ImageServiceImpl imageServ = new ImageServiceImpl();
@@ -81,53 +81,34 @@ public class ProductRegServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //MerchantServiceImpl merhantServ = new MerchantServiceImpl();
-        //Merchant actMechant = merhantServ.getByVisitor(((Visitor) request.getSession().getAttribute("user")).getVisitorId());
         Merchant actMerchant = (Merchant) request.getSession().getAttribute("merchant");
-        ProductServiceImpl productServ = new ProductServiceImpl();
         Map<String, String> messages = new HashMap<>();
+
         Product newProduct = new Product();
         newProduct.setMerchantId(actMerchant.getId());
         newProduct.setName(request.getParameter("pname"));
         newProduct.setDescription(request.getParameter("pdescription"));
-        try {
-            newProduct.setType(ProductType.values()[Integer.parseInt(request.getParameter("ptype"))]);
-            if (request.getParameter("productid").isEmpty()) {
-                newProduct = productServ.create(newProduct);
-            } else {
-                newProduct.setId(Long.parseLong(request.getParameter("productid")));
-                productServ.modify(newProduct.getId(), newProduct);
-            }
-        } catch (WPException e) {
-            if (newProduct.getName() == null || newProduct.getName().isEmpty()) {
-                messages.put("pname", e.getMessage());
-            }
-            if (newProduct.getDescription() == null || newProduct.getDescription().isEmpty()) {
-                messages.put("pdescription", e.getMessage());
-            }
-            if (newProduct.getType() == null) {
-                messages.put("ptype", e.getMessage());
-            }
-        } catch (NumberFormatException e) {
-            messages.put("ptype", "Válasszon egyet a listából");
-        }
-        if (messages.isEmpty()) {
-            request.setAttribute("productid", newProduct.getId());
-            ImageServiceImpl imageServ = new ImageServiceImpl();
-            Image savedImage = imageServ.getForProduct(newProduct.getId());
-            Image newImage = new Image();
+        newProduct.setType(ProductType.values()[Integer.parseInt(request.getParameter("ptype"))]);
 
-            File fileSaveDir = new File(Const.SAVE_DIR);
-            if (!fileSaveDir.exists()) {
-                fileSaveDir.mkdir();
-            }
-            String ext;
-            Part part = request.getPart("img");
-            String fileName = part.getSubmittedFileName();
-            String mimeType = getServletContext().getMimeType(fileName);
-            if (mimeType == null && savedImage == null) {
-                messages.put("img", "Valasszon egy kepet");
-            } else if (mimeType != null && mimeType.startsWith("image/")) {
+        Image newImage = new Image();
+        File fileSaveDir = new File(Const.SAVE_DIR);
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdir();
+        }
+        String ext;
+        Part part = request.getPart("img");
+        String fileName = part.getSubmittedFileName();
+        String mimeType = getServletContext().getMimeType(fileName);
+        if ( mimeType==null || mimeType.isEmpty()) {
+            messages.put("img", "Valasszon egy kepet");
+        } else if (!mimeType.startsWith("image/")) {
+            messages.put("img", "Nem megfelelő formátumú a feltölteni kívánt kép.");
+        } else {
+            try {
+                ProductServiceImpl productServ = new ProductServiceImpl();
+                newProduct = productServ.create(newProduct);
+
+                ImageServiceImpl imageServ = new ImageServiceImpl();
                 ext = fileName.substring(fileName.indexOf("."));
                 newImage.setContactId(newProduct.getId());
                 newImage.setType(ImageType.PRODUCT);
@@ -135,19 +116,24 @@ public class ProductRegServlet extends HttpServlet {
                 newImage.setLocation("img/" + fileName);
                 part.write(Const.SAVE_DIR + File.separator + fileName);
                 imageServ.create(newImage);
-            } else if (mimeType != null && !mimeType.startsWith("image/")) {
-                messages.put("img", "Nem megfelelő formátumú a feltölteni kívánt kép.");
+            } catch (WPException e) {
+                if (newProduct.getName() == null || newProduct.getName().isEmpty()) {
+                    messages.put("pname", e.getMessage());
+                }
+                if (newProduct.getDescription() == null || newProduct.getDescription().isEmpty()) {
+                    messages.put("pdescription", e.getMessage());
+                }
+                if (newProduct.getType() == null) {
+                    messages.put("ptype", e.getMessage());
+                }
             }
-        } else {
-            messages.put("img", "Kerem elobb adja meg a termekadatokat!");
         }
         if (!messages.isEmpty()) {
             request.setAttribute("userinput", newProduct);
             request.setAttribute("messages", messages);            
         } 
-            request.setAttribute("productid", "");
-             doGet(request, response);
-        
+            doGet(request, response);
+
     }
 
     /**

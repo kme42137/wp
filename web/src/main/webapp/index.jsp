@@ -13,7 +13,7 @@
                 padding-top: 150px;
                 background-attachment: relative;
                 background-position: center center;
-                height: 600px;
+                height: 700px;
                 width: 100%;
 
                 -webkit-background-size: 100%;
@@ -44,11 +44,11 @@
             <div class="container p-5">
                 <div class="row pt-5">
                     <div class="col-md-12 text-right pt-5">
-                        <h1>Ha tudni szeretnéd, mit kapni a kornyéken vagy eladnád a portékádat, akkor jó helyen jársz.</h1>
+                        <h1>Ha tudni szeretnéd, mit kapni a kornyéken <br>vagy eladnád a portékádat, akkor jó helyen jársz.</h1>
                         <h2 class="lead pt-5">A honlap jelenleg fejlesztés alatt áll, így csak a félkész állapot tekinthető meg.</h2>
                     </div>
                 </div>
             </div>
-        </header>                
+        </header>         
     </body>
 </html>

@@ -34,13 +34,24 @@
                                     <label>${messages.pname}</label>  
                                 </div>                    
                                 <div class="form-group col-md-6">
-                                    <label>Termékcsoport</label>   
+                                    <label>Termékcsoport</label>                                                                                                            
                                     <select class="form-control" name="ptype">
-                                        <option  disabled selected value> -- válasszon -- </option>
-                                        <c:forEach items="${types}" var="t">                                                                
-                                            <option value="${t.key}">${t.value}</option>                                                                                 
-                                        </c:forEach>                                
-                                    </select>
+                                            <c:set var="van" value="${false}"></c:set>                                
+                                            <c:forEach items="${types}" var="t">                                                                
+                                                <c:choose>
+                                                    <c:when test="${t.key==userinput.type.id}">
+                                                        <c:set var="van" value="${true}"></c:set>
+                                                        <option value="${t.key}" selected>${t.value}</option>                                              
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${t.key}">${t.value}</option>                                             
+                                                    </c:otherwise>                                    
+                                                </c:choose>
+                                            </c:forEach>
+                                            <c:if test="${!van}">
+                                                <option selected value="0" > -- válasszon -- </option>
+                                            </c:if>                                            
+                                        </select>                                                                                                                                                
                                     <label>${messages.ptype}</label> 
                                 </div>  
                             </div>
@@ -56,7 +67,6 @@
                                 <input type="file" name="img" class="form-control-file" />
                                 <label>${messages.img}</label> 
                             </div>   
-                            <input type="hidden" value="${productid}" name="productid" />
                             <div class="form-group row"><input type="submit" value="Jóváhagyás" class="btn btn-outline-success"></div> 
                         </form>
 

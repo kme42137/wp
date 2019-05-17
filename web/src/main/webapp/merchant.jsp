@@ -77,7 +77,7 @@
                 </div>                                          
                         <c:if test="${not empty products}">                                   
                             <div class="row p-4">
-                    <h5>Kinalatom:</h5>
+                    <h3>Kinálatom:</h3>
                     </div>
                             <c:forEach items="${products}" var="product">
                                 <div class="row">
